@@ -1,11 +1,65 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="about">
-  <h2>About Underground Heat</h2>
-  <p>
-    Underground Heat is a movement that amplifies the voices of rising stars in music and entertainment.
-    We bring raw talent, powerful stories, and exclusive content to your screen.
-    Whether you're an artist, producer, or fan, you're part of the heat.
-  </p>
-</div>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>About • {{ brand.name }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{
+      --c-orange: {{ brand.orange }};
+      --c-light:  {{ brand.light_gray }};
+      --c-pink:   {{ brand.dark_pink }};
+      --c-purple: {{ brand.dark_purple }};
+      --c-green:  {{ brand.green }};
+    }
+  </style>
+</head>
+<body class="bg-[var(--c-purple)] text-white">
+  <!-- NAV -->
+  <nav class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+    <a href="{{ url_for('home') }}" class="flex items-center gap-3 font-extrabold text-xl">
+      <img src="{{ brand.logo_url }}" alt="Underground Heat logo" class="w-9 h-9 rounded-md shadow" />
+      <span>{{ brand.name }}</span>
+    </a>
+    <div class="flex items-center gap-6 text-sm">
+      <a href="{{ url_for('home') }}"    class="hover:text-[var(--c-light)]">Home</a>
+      <a href="{{ url_for('contact') }}" class="hover:text-[var(--c-light)]">Contact</a>
+      <a href="{{ url_for('privacy') }}" class="hover:text-[var(--c-light)]">Privacy</a>
+      <a href="{{ url_for('terms') }}"   class="hover:text-[var(--c-light)]">Terms</a>
+      <a href="{{ url_for('admin') }}?key=changeme" class="hover:text-[var(--c-light)]">Admin</a>
+    </div>
+  </nav>
+
+  <header class="py-14 text-center"
+          style="background:linear-gradient(135deg,var(--c-orange),var(--c-green));">
+    <h1 class="text-4xl font-extrabold">About Underground Heat</h1>
+    <p class="mt-2 text-lg">A performance-driven music show for rising talent.</p>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-6 space-y-10">
+    <section>
+      <h2 class="text-2xl font-bold mb-3">Our Story</h2>
+      <p class="text-white/90">
+        {{ brand.name }} showcases independent artists through raw performances,
+        authentic interviews, and high-energy crowd moments. We exist to give
+        hungry artists a real stage—and fans a front-row seat.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-bold mb-3">What We Do</h2>
+      <ul class="list-disc list-inside space-y-1 text-white/90">
+        <li>Live performance tapings and exclusive premieres</li>
+        <li>Spotlight interviews and behind-the-scenes stories</li>
+        <li>Short-form clips engineered for discovery</li>
+        <li>Community showcases and fan voting</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="bg-black/40 text-white/80 py-6 mt-12 text-center">
+    <p>&copy; {{ current_year }} {{ brand.name }}</p>
+  </footer>
+</body>
+</html>
