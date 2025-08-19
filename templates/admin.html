@@ -1,1 +1,50 @@
-
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Admin | Underground Heat</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body{font-family:system-ui,Segoe UI,Arial,sans-serif;margin:0;background:#0b0b2a;color:#fff}
+    .wrap{max-width:1000px;margin:40px auto;padding:24px}
+    .card{background:#15153a;border-radius:16px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    h1{margin:0 0 16px}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{border-bottom:1px solid #2b2b5e;padding:10px;text-align:left;color:#cfd3ff}
+    th{color:#fff}
+    .muted{color:#9aa0ff}
+    a{color:#ffb84d;text-decoration:none}
+    a:hover{text-decoration:underline}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Admin — Submissions</h1>
+      {% if rows and rows|length %}
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th><th>Artist</th><th>Email</th><th>Video</th><th>Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in rows %}
+              <tr>
+                <td>{{ r.id }}</td>
+                <td>{{ r.artist_name }}</td>
+                <td>{{ r.email }}</td>
+                <td><a href="{{ r.video_link }}" target="_blank">link</a></td>
+                <td class="muted">{{ r.created_at }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p class="muted">No submissions yet.</p>
+      {% endif %}
+      <p style="margin-top:12px"><a href="/">← Back home</a></p>
+    </div>
+  </div>
+</body>
+</html>
