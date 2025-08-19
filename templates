@@ -112,3 +112,63 @@ admin.html
   </div>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Underground Heat Portal</title>
+</head>
+<body>
+  <h1>Welcome to Underground Heat</h1>
+  <p>This is the homepage of your new portal.</p>
+  <nav>
+    <a href="/">Home</a> |
+    <a href="/form">Form</a> |
+    <a href="/success">Success</a>
+  </nav>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Underground Heat Portal</title>
+</head>
+<body>
+  <h1>Welcome to Underground Heat</h1>
+  <p>This is the homepage of your new portal.</p>
+  <nav>
+    <a href="/">Home</a> |
+    <a href="/form">Form</a> |
+    <a href="/success">Success</a>
+  </nav>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Submit Form</title>
+</head>
+<body>
+  <h1>Form Page</h1>
+  <form action="/submit" method="post">
+    <label for="email">Enter your email:</label>
+    <input type="email" id="email" name="email" required>
+    <button type="submit">Submit</button>
+  </form>
+  <a href="/">Back to Home</a>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Success</title>
+</head>
+<body>
+  <h1>Form Submitted Successfully!</h1>
+  <p>Thank you for your submission.</p>
+  <a href="/">Back to Home</a>
+</body>
+</html>
