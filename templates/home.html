@@ -7,10 +7,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-[#f5f676] text-[#1c0b3a]">
-  <nav class="bg-[#1c0b3a] text-white p-4 flex justify-between">
-    <a href="{{ url_for('home') }}" class="font-bold text-[#fb7b14]">Underground Heat</a>
-    <div class="space-x-4">
+<body class="bg-gray-100 text-[#1c0b3a]">
+  <!-- Navigation Bar -->
+  <nav class="bg-[#1c0b3a] text-white p-4 flex justify-between items-center">
+    <a href="{{ url_for('home') }}" class="text-2xl font-bold text-[#fb7b14]">Underground Heat</a>
+    <div class="space-x-6 text-sm font-medium">
       <a href="{{ url_for('about') }}" class="hover:text-[#fb7b14]">About</a>
       <a href="{{ url_for('contact') }}" class="hover:text-[#fb7b14]">Contact</a>
       <a href="{{ url_for('privacy') }}" class="hover:text-[#fb7b14]">Privacy</a>
@@ -19,23 +20,35 @@
     </div>
   </nav>
 
-  <header class="bg-[#fb7b14] py-20 text-center text-white">
+  <!-- Hero Section -->
+  <header class="bg-[#fb7b14] text-white py-20 text-center">
     <h1 class="text-5xl font-extrabold">Welcome to Underground Heat</h1>
-    <p class="mt-4 text-xl font-medium">The hottest underground music video show in the game</p>
+    <p class="mt-4 text-xl">Your #1 Source for the Hottest Underground Music</p>
   </header>
 
-  <main class="max-w-4xl mx-auto p-6 text-lg space-y-6">
+  <!-- Main Content -->
+  <main class="max-w-4xl mx-auto p-8 text-lg space-y-6">
     <p>
-      Underground Heat is your destination for discovering raw talent, exclusive interviews,
-      and high-energy performances. We spotlight the underground artists you need to know — from Memphis and beyond.
+      <strong>Underground Heat</strong> is a movement — a platform for rising artists, passionate creatives,
+      and the culture they’re shaping. From exclusive music videos and interviews to viral underground tracks,
+      we’re fueling the fire of raw talent and real stories.
     </p>
-    <p class="text-[#780e38] font-semibold">
-      Subscribe. Submit your videos. Join the movement.
+
+    <p>
+      We work directly with artists, fans, schools, and communities to spotlight new voices,
+      open doors in the entertainment industry, and turn dreams into reality.
     </p>
+
+    <div class="p-4 bg-[#f5f676] border-l-4 border-[#fb7b14] rounded">
+      <p class="text-[#780e38] font-semibold">
+        🎤 Submit your music videos, get featured, and join the next wave of heat.
+      </p>
+    </div>
   </main>
 
+  <!-- Footer -->
   <footer class="bg-[#1c0b3a] text-white py-6 text-center mt-12">
-    <p>&copy; {{ current_year }} Underground Heat</p>
+    <p>&copy; {{ current_year }} Underground Heat. All rights reserved.</p>
   </footer>
 </body>
 </html>
