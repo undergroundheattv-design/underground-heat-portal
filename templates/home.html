@@ -1,66 +1,83 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Go Get It The Movement</title>
-    <!-- Simple Tailwind CDN for quick styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="utf-8" />
+  <title>Underground Heat</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root{
+      --uh-orange:#fb7b14;
+      --uh-light:#f5f676;
+      --uh-pink:#780e38;
+      --uh-purple:#1c0b3a;
+      --uh-green:#30ad3e;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background: radial-gradient(1200px 600px at 10% 0%, #2a0f56 0%, var(--uh-purple) 60%); color:#fff; font-family:system-ui, Segoe UI, Arial, sans-serif;}
+    .nav{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:18px 20px}
+    .nav a{color:#fff;text-decoration:none;opacity:.9}
+    .nav a:hover{opacity:1}
+    .menu{display:flex;gap:18px;align-items:center}
+    .cta{background:var(--uh-orange);color:#fff;font-weight:800;padding:10px 14px;border-radius:12px}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px 20px 60px}
+    .hero{display:grid;grid-template-columns:1.2fr 1fr;gap:28px;align-items:center;margin-top:16px}
+    .card{background:#15153a;border-radius:16px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    .tag{background:var(--uh-pink);display:inline-block;padding:4px 10px;border-radius:999px;font-weight:700;font-size:12px}
+    .btn{background:var(--uh-orange);color:#fff;font-weight:800;padding:14px 18px;border:none;border-radius:12px;cursor:pointer;text-decoration:none;display:inline-block}
+    .btn:hover{filter:brightness(1.05)}
+    .kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+    .kpi .card{background:#101133}
+    footer{border-top:1px solid rgba(255,255,255,.12); margin-top:40px; padding:18px 0; color:#cfd3ff; font-size:14px}
+    .links{display:flex;gap:14px;flex-wrap:wrap}
+    .links a{color:var(--uh-light)}
+  </style>
 </head>
-<body class="bg-gray-100 text-gray-900">
-
-    <!-- Navigation Bar -->
-    <nav class="bg-black text-white p-4 flex justify-between items-center">
-        <a href="{{ url_for('home') }}" class="text-xl font-bold">Go Get It The Movement</a>
-        <div class="space-x-4">
-            <a href="{{ url_for('about') }}" class="hover:text-yellow-400">About</a>
-            <a href="{{ url_for('contact') }}" class="hover:text-yellow-400">Contact</a>
-            <a href="{{ url_for('privacy') }}" class="hover:text-yellow-400">Privacy</a>
-            <a href="{{ url_for('terms') }}" class="hover:text-yellow-400">Terms</a>
-            <a href="{{ url_for('admin') }}" class="hover:text-yellow-400">Admin</a>
-        </div>
+<body>
+  <header class="nav">
+    <a href="{{ url_for('home') }}" style="display:flex;align-items:center;gap:12px;">
+      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Underground Heat" width="56" height="56">
+      <strong style="font-size:20px;letter-spacing:.5px;">Underground Heat</strong>
+    </a>
+    <nav class="menu">
+      <a href="{{ url_for('about') }}">About</a>
+      <a href="{{ url_for('contact') }}">Contact</a>
+      <a class="cta" href="{{ url_for('contact') }}">Submit Your Video</a>
     </nav>
+  </header>
 
-    <!-- Hero Section -->
-    <section class="bg-yellow-400 py-20 text-center">
-        <h1 class="text-4xl font-extrabold mb-4">Welcome to Go Get It The Movement</h1>
-        <p class="text-lg max-w-2xl mx-auto">
-            Empowering people to chase their dreams with purpose, passion, and vision.
+  <main class="wrap">
+    <section class="hero">
+      <div class="card">
+        <span class="tag">Music Show</span>
+        <h1 style="margin:10px 0 8px;font-size:36px;line-height:1.1">Where underground artists get 🔥 exposure</h1>
+        <p style="color:#cfd3ff;max-width:56ch">
+          Underground Heat showcases raw talent—music videos and performances from rising artists.
+          Submit your video and get in front of fans, tastemakers, and curators.
         </p>
-        <a href="{{ url_for('about') }}" class="mt-6 inline-block px-6 py-3 bg-black text-white rounded-lg shadow hover:bg-gray-800">
-            Learn More
-        </a>
+        <div style="display:flex;gap:12px;margin-top:14px">
+          <a class="btn" href="{{ url_for('contact') }}">Submit Your Video</a>
+          <a class="btn" style="background:var(--uh-green)" href="{{ url_for('about') }}">Learn More</a>
+        </div>
+        <div class="kpi">
+          <div class="card"><strong style="font-size:22px">Weekly</strong><div style="color:#cfd3ff">New drops</div></div>
+          <div class="card"><strong style="font-size:22px">Curated</strong><div style="color:#cfd3ff">By real heads</div></div>
+          <div class="card"><strong style="font-size:22px">Global</strong><div style="color:#cfd3ff">Underground scene</div></div>
+        </div>
+      </div>
+      <div class="card" style="text-align:center">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Underground Heat" width="280" height="280" style="max-width:100%;height:auto">
+        <p style="color:#cfd3ff;margin-top:10px">Orange <code>#fb7b14</code> • Pink <code>#780e38</code> • Purple <code>#1c0b3a</code> • Green <code>#30ad3e</code></p>
+      </div>
     </section>
 
-    <!-- Content Section -->
-    <section class="py-12 px-6 max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
-        <div>
-            <h2 class="text-2xl font-bold mb-4">Our Mission</h2>
-            <p>
-                We believe in motivating, educating, and inspiring individuals to take action on their goals. 
-                Go Get It The Movement is more than a brand — it’s a lifestyle. Whether you’re chasing success in business, 
-                personal growth, or creativity, we’re here to support you every step of the way.
-            </p>
-        </div>
-        <div>
-            <h2 class="text-2xl font-bold mb-4">What We Offer</h2>
-            <ul class="list-disc list-inside space-y-2">
-                <li>Daily motivation and empowerment</li>
-                <li>Business and personal growth strategies</li>
-                <li>Community-driven support and collaboration</li>
-                <li>Exclusive content, events, and opportunities</li>
-            </ul>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-black text-white py-6 mt-12 text-center">
-        <p>&copy; {{ 2025 }} Go Get It The Movement. All rights reserved.</p>
-        <div class="space-x-4 mt-2">
-            <a href="{{ url_for('privacy') }}" class="hover:text-yellow-400">Privacy Policy</a>
-            <a href="{{ url_for('terms') }}" class="hover:text-yellow-400">Terms of Service</a>
-        </div>
+    <footer>
+      <div class="links">
+        <a href="{{ url_for('privacy') }}">Privacy</a>
+        <a href="{{ url_for('terms') }}">Terms</a>
+        <a href="{{ url_for('admin') }}">Admin</a>
+      </div>
+      <div style="margin-top:6px;">© {{ current_year }} Underground Heat</div>
     </footer>
-
+  </main>
 </body>
 </html>
