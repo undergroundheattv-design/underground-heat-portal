@@ -1,1 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Contact • Go Get It The Movement</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+  <nav class="bg-black text-white p-4 flex justify-between">
+    <a href="{{ url_for('home') }}" class="font-bold">Go Get It The Movement</a>
+    <div class="space-x-4">
+      <a href="{{ url_for('home') }}" class="hover:text-yellow-400">Home</a>
+      <a href="{{ url_for('about') }}" class="hover:text-yellow-400">About</a>
+      <a href="{{ url_for('privacy') }}" class="hover:text-yellow-400">Privacy</a>
+      <a href="{{ url_for('terms') }}" class="hover:text-yellow-400">Terms</a>
+      <a href="{{ url_for('admin') }}" class="hover:text-yellow-400">Admin</a>
+    </div>
+  </nav>
 
+  <header class="bg-yellow-400 py-16 text-center">
+    <h1 class="text-4xl font-extrabold">Contact Us</h1>
+    <p class="mt-2 text-lg">We’d love to hear from you.</p>
+  </header>
+
+  <main class="max-w-3xl mx-auto p-6">
+    {% if success %}
+      <div class="mb-6 p-4 bg-green-100 border border-green-300 rounded">
+        <p class="text-green-800 font-semibold">Thanks! Your message was sent.</p>
+      </div>
+    {% elif error %}
+      <div class="mb-6 p-4 bg-red-100 border border-red-300 rounded">
+        <p class="text-red-800 font-semibold">Something went wrong. Please try again.</p>
+      </div>
+    {% endif %}
+
+    <form method="post" action="{{ url_for('contact') }}" class="bg-white p-6 rounded shadow space-y-4">
+      <div>
+        <label class="block font-semibold mb-1">Name</label>
+        <input name="name" required class="w-full border rounded px-3 py-2" placeholder="Your name" />
+      </div>
+      <div>
+        <label class="block font-semibold mb-1">Email</label>
+        <input type="email" name="email" required class="w-full border rounded px-3 py-2" placeholder="you@example.com" />
+      </div>
+      <div>
+        <label class="block font-semibold mb-1">Message</label>
+        <textarea name="message" rows="5" required class="w-full border rounded px-3 py-2" placeholder="How can we help?"></textarea>
+      </div>
+      <button class="px-5 py-3 bg-black text-white rounded hover:bg-gray-800 font-bold">Send</button>
+    </form>
+  </main>
+
+  <footer class="bg-black text-white py-6 mt-12 text-center">
+    <p>&copy; {{ current_year }} Go Get It The Movement</p>
+  </footer>
+</body>
+</html>
