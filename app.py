@@ -87,7 +87,7 @@ Message:
 """
         try:
             # Sends to ALERT_TO_EMAIL unless you pass to_email=email
-            send_email("New Contact — Go Get It The Movement", body, to_email=None)
+            send_email("New Contact — Underground Heat", body, to_email=None)
             return render_template("contact.html", success=True, current_year=datetime.now().year)
         except Exception as e:
             print("[EMAIL] contact send failed:", e)
@@ -127,7 +127,7 @@ def healthz():
 @app.route("/email-test", methods=["GET"])
 def email_test():
     try:
-        send_email("Email Test — Go Get It The Movement", "If you see this, SMTP works.")
+        send_email("Email Test — Underground Heat", "If you see this, SMTP works.")
         return "Sent ✅"
     except Exception as e:
         print("[EMAIL-TEST] Failed:", e)
