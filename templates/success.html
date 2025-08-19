@@ -1,25 +1,78 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Thanks | Underground Heat</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <title>Success • Underground Heat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body{font-family:system-ui,Segoe UI,Arial,sans-serif;margin:0;background:#0b0b2a;color:#fff}
-    .wrap{max-width:720px;margin:40px auto;padding:24px}
-    .card{background:#15153a;border-radius:16px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.35);text-align:center}
-    h2{margin:0 0 8px}
-    a{color:#ffb84d;text-decoration:none}
-    a:hover{text-decoration:underline}
+    :root{
+      --uh-orange:#fb7b14;
+      --uh-lightgray:#f5f676;
+      --uh-pink:#780e38;
+      --uh-purple:#1c0b3a;
+      --uh-green:#30ad3e;
+    }
+    .uh-bg { background: var(--uh-purple); }
+    .uh-card { background:#15153a; }
+    .uh-link { color: var(--uh-lightgray); }
+    .uh-link:hover { color:#fff; text-decoration: underline; }
+    .uh-btn { background: var(--uh-orange); color:#000; }
+    .uh-btn:hover { filter: brightness(1.05); }
   </style>
 </head>
-<body>
-  <div class="wrap">
-    <div class="card">
-      <h2>Thank you! ✅</h2>
-      <p>Your submission was received.</p>
-      <p><a href="/">Go home</a></p>
+<body class="uh-bg text-white min-h-screen">
+  <!-- Nav -->
+  <nav class="bg-black/60 backdrop-blur p-4">
+    <div class="max-w-6xl mx-auto flex items-center justify-between gap-4">
+      <a href="{{ url_for('home') }}" class="flex items-center gap-3 font-extrabold tracking-wide">
+        <img src="/logo.png" alt="Underground Heat" class="h-8 w-auto" />
+        <span>Underground Heat</span>
+      </a>
+      <div class="flex items-center gap-5 text-sm">
+        <a href="{{ url_for('home') }}" class="uh-link">Home</a>
+        <a href="{{ url_for('about') }}" class="uh-link">About</a>
+        <a href="{{ url_for('contact') }}" class="uh-link">Contact</a>
+        <a href="{{ url_for('privacy') }}" class="uh-link">Privacy</a>
+        <a href="{{ url_for('terms') }}" class="uh-link">Terms</a>
+        <a href="{{ url_for('admin') }}" class="uh-link">Admin</a>
+      </div>
     </div>
-  </div>
+  </nav>
+
+  <!-- Header -->
+  <header class="py-14 text-center px-4">
+    <h1 class="text-4xl md:text-5xl font-extrabold">Thank You! ✅</h1>
+    <p class="mt-2 text-indigo-200 max-w-2xl mx-auto">
+      Your submission was received by the Underground Heat team.
+      We’ll review it and reach out if we need anything else.
+    </p>
+  </header>
+
+  <!-- Card -->
+  <main class="max-w-2xl mx-auto px-4 pb-16">
+    <div class="uh-card rounded-2xl p-8 text-center">
+      <div class="mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-5" style="background:var(--uh-green); color:#001a04;">
+        <!-- check icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-9 h-9" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+        </svg>
+      </div>
+      <h2 class="text-2xl font-bold">Submission received</h2>
+      <p class="mt-2 text-indigo-200">
+        Want to send another? Or head back to the homepage.
+      </p>
+
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+        <a href="{{ url_for('contact') }}" class="uh-btn px-5 py-3 rounded-lg font-bold">Submit another</a>
+        <a href="{{ url_for('home') }}" class="px-5 py-3 rounded-lg font-bold border border-white/20 hover:bg-white/5">Back home</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-black/70 py-6 mt-8 text-center text-sm text-indigo-200">
+    © {{ current_year }} Underground Heat
+  </footer>
 </body>
 </html>
