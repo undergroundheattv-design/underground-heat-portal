@@ -1,19 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="contact">
-  <h2>Contact Us</h2>
-  <p>Have questions or want to collaborate? Reach out to the Underground Heat team.</p>
-  <form method="POST">
-    <label for="name">Your Name</label>
-    <input type="text" name="name" required />
 
-    <label for="email">Your Email</label>
-    <input type="email" name="email" required />
+<section class="contact">
+  <h2>Contact Underground Heat</h2>
+  <p>Have questions, want to partner, or need more info? Reach out to us below.</p>
 
-    <label for="message">Your Message</label>
-    <textarea name="message" required></textarea>
+  <form action="{{ url_for('contact') }}" method="post">
+    <label for="name">Your Name:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="email">Your Email:</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="message">Your Message:</label>
+    <textarea id="message" name="message" rows="5" required></textarea>
 
     <button type="submit">Send Message</button>
   </form>
-</div>
+</section>
+
 {% endblock %}
