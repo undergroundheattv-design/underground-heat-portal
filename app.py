@@ -115,6 +115,10 @@ def email_test():
 def healthz():
     return "ok"
 
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
 # -------- local run --------
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", "5000")), debug=True)
