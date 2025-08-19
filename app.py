@@ -1,25 +1,24 @@
 import os
 import smtplib, ssl
 from email.message import EmailMessage
-from flask import Flask, request, redirect, url_for, render_template
-from jinja2 import TemplateNotFound
+from flask import Flask, render_template, request, redirect, url_for
 
-# Case-sensitive template/static folder handling (Linux)
-TEMPLATE_DIR = "templates" if os.path.isdir("templates") else ("Templates" if os.path.isdir("Templates") else None)
-STATIC_DIR   = "static"   if os.path.isdir("static")   else ("Static"   if os.path.isdir("Static")   else None)
+# If your folders are literally named "templates" and "static", you can omit these args.
+app = Flask(__name__, template_folder="templates", static_folder="static")
 
-app = Flask(__name__, template_folder=TEMPLATE_DIR, static_folder=STATIC_DIR)
-
-def render_or_fallback(template_name: str, fallback_html: str, **ctx):
-    try:
-        if app.template_folder:
-            return render_template(template_name, **ctx)
-        raise TemplateNotFound(template_name)
-    except TemplateNotFound:
-        return fallback_html
-
+# ---------- Email helper (optional) ----------
 def send_alert_email(subject: str, body: str) -> None:
-    """Send an email via SMTP if env vars are present."""
+    """
+    Sends an email via SMTP if all required env vars are present.
+    Required env vars:
+      - SMTP_HOST
+      - SMTP_USER
+      - SMTP_PASS
+      - ALERT_TO_EMAIL  (who receives alerts)
+    Optional:
+      - SMTP_PORT (defaults 587)
+      - FROM_EMAIL (defaults to SMTP_USER)
+    """
     to_email  = os.getenv("ALERT_TO_EMAIL")
     smtp_host = os.getenv("SMTP_HOST")
     smtp_user = os.getenv("SMTP_USER")
@@ -27,8 +26,9 @@ def send_alert_email(subject: str, body: str) -> None:
     smtp_port = int(os.getenv("SMTP_PORT", "587"))
     from_email = os.getenv("FROM_EMAIL", smtp_user or "noreply@undergroundheat.local")
 
+    # Skip silently if not configured
     if not (to_email and smtp_host and smtp_user and smtp_pass):
-        print("[EMAIL] Skipping send (missing SMTP env vars).")
+        print("[EMAIL] Skipping (missing SMTP env vars).")
         return
 
     msg = EmailMessage()
@@ -52,81 +52,52 @@ def send_alert_email(subject: str, body: str) -> None:
             server.login(smtp_user, smtp_pass)
             server.send_message(msg)
 
-@app.route("/")
+# ---------- Routes ----------
+@app.route("/", methods=["GET"])
 def home():
-    return render_or_fallback(
-        "home.html",
-        """<!doctype html>
-<html>
-  <head><meta charset="utf-8"><title>Underground Heat</title></head>
-  <body style="font-family:Arial; padding:24px;">
-    <h1>Underground Heat — It works! 🔥</h1>
-    <ul>
-      <li><a href="/submit">Submit form</a></li>
-      <li><a href="/email-test">Email test</a></li>
-      <li><a href="/healthz">Health</a></li>
-    </ul>
-  </body>
-</html>"""
-    )
+    # Renders templates/home.html
+    return render_template("home.html")
 
 @app.route("/submit", methods=["GET"])
 def submit_get():
-    return render_or_fallback(
-        "form.html",
-        """<!doctype html>
-<html>
-  <head><meta charset="utf-8"><title>Submit | Underground Heat</title></head>
-  <body style="font-family:Arial; padding:24px;">
-    <h2>Artist Submission</h2>
-    <form method="post" action="/submit">
-      <div><label>Artist Name <input name="artist_name" required></label></div>
-      <div><label>Email <input type="email" name="email" required></label></div>
-      <div><label>Video Link <input name="video_link" required></label></div>
-      <button type="submit">Send</button>
-    </form>
-    <p><a href="/">← Back</a></p>
-  </body>
-</html>"""
-    )
+    # Renders templates/form.html
+    return render_template("form.html")
 
 @app.route("/submit", methods=["POST"])
 def submit_post():
-    artist = (request.form.get("artist_name") or "").strip()
-    email  = (request.form.get("email") or "").strip()
-    video  = (request.form.get("video_link") or "").strip()
+    # Minimal fields that match your current form.html
+    artist_name = (request.form.get("artist_name") or "").strip()
+    email       = (request.form.get("email") or "").strip()
+    video_link  = (request.form.get("video_link") or "").strip()
 
-    # Send alert email
+    # Send an alert email (optional)
     body = f"""New submission received:
 
-Artist: {artist or "-"}
-Email: {email or "-"}
-Video: {video or "-"}
+Artist: {artist_name or "-"}
+Email:  {email or "-"}
+Video:  {video_link or "-"}
 """
     try:
         send_alert_email("New Underground Heat submission", body)
-        print("[EMAIL] Submission alert sent.")
+        print("[EMAIL] Submission alert attempted.")
     except Exception as e:
         print("[EMAIL] Failed to send alert:", e)
 
+    # Show success page
     return redirect(url_for("success"))
 
-@app.route("/success")
+@app.route("/success", methods=["GET"])
 def success():
-    return render_or_fallback(
-        "success.html",
-        """<!doctype html>
-<html>
-  <head><meta charset="utf-8"><title>Success</title></head>
-  <body style="font-family:Arial; padding:24px;">
-    <h2>Thank you! ✅</h2>
-    <p>Your info was received.</p>
-    <p><a href="/">Go home</a></p>
-  </body>
-</html>"""
-    )
+    # Renders templates/success.html
+    return render_template("success.html")
 
-@app.route("/email-test")
+# Quick health check for Render
+@app.route("/healthz", methods=["GET"])
+def healthz():
+    return "ok"
+
+# Manual SMTP test (visiting this tries to send a test email)
+@app.route("/email-test", methods=["GET"])
 def email_test():
     try:
         send_alert_email("Underground Heat — Email Test", "If you see this, SMTP works.")
@@ -134,9 +105,6 @@ def email_test():
     except Exception as e:
         return f"Failed ❌: {e}", 500
 
-@app.route("/healthz")
-def healthz():
-    return "ok"
-
+# Local dev only; Render uses gunicorn with `app:app`
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", "5000")), debug=True)
