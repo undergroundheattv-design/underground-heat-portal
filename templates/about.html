@@ -1,9 +1,51 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head><meta charset="utf-8"><title>About | Underground Heat</title></head>
-<body style="font-family:system-ui;padding:24px;background:#0b0b2a;color:#fff">
-  <h1>About Underground Heat</h1>
-  <p>Coming soon.</p>
-  <p><a href="{{ url_for('home') }}" style="color:#ffb84d">← Back</a></p>
+<head>
+  <meta charset="UTF-8" />
+  <title>About • Go Get It The Movement</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+  <nav class="bg-black text-white p-4 flex justify-between">
+    <a href="{{ url_for('home') }}" class="font-bold">Go Get It The Movement</a>
+    <div class="space-x-4">
+      <a href="{{ url_for('home') }}" class="hover:text-yellow-400">Home</a>
+      <a href="{{ url_for('contact') }}" class="hover:text-yellow-400">Contact</a>
+      <a href="{{ url_for('privacy') }}" class="hover:text-yellow-400">Privacy</a>
+      <a href="{{ url_for('terms') }}" class="hover:text-yellow-400">Terms</a>
+      <a href="{{ url_for('admin') }}" class="hover:text-yellow-400">Admin</a>
+    </div>
+  </nav>
+
+  <header class="bg-yellow-400 py-16 text-center">
+    <h1 class="text-4xl font-extrabold">About the Movement</h1>
+    <p class="mt-2 text-lg">Purpose • Passion • Action</p>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-6 space-y-8">
+    <section>
+      <h2 class="text-2xl font-bold mb-3">Our Story</h2>
+      <p>
+        Go Get It The Movement exists to empower people to chase bold goals.
+        We share real strategies, real accountability, and real community —
+        turning ambition into momentum.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-bold mb-3">Core Values</h2>
+      <ul class="list-disc list-inside space-y-1">
+        <li>Discipline over motivation</li>
+        <li>Community over ego</li>
+        <li>Consistency over perfection</li>
+        <li>Impact over clout</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="bg-black text-white py-6 mt-12 text-center">
+    <p>&copy; {{ current_year }} Go Get It The Movement</p>
+  </footer>
 </body>
 </html>
