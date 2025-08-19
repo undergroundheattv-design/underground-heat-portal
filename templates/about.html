@@ -1,67 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>About • Underground Heat</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    :root{--uh-orange:#fb7b14;--uh-light:#f5f676;--uh-pink:#780e38;--uh-purple:#1c0b3a;--uh-green:#30ad3e}
-    .uh-bg{background:var(--uh-purple);color:#fff}
-    .uh-hero{background:var(--uh-orange);color:#1c0b3a}
-    .uh-nav{background:#000;color:#fff}
-    .uh-link:hover{color:var(--uh-light)}
-  </style>
-</head>
-<body class="bg-gray-100 text-gray-900">
-  <!-- Header -->
-  <nav class="uh-nav p-4">
-    <div class="max-w-6xl mx-auto flex items-center justify-between">
-      <a href="{{ url_for('home') }}" class="flex items-center gap-3 font-bold text-lg">
-        <img src="{{ url_for('static', filename='logo.png') }}" alt="Underground Heat" class="h-8 w-auto">
-        <span>Underground Heat</span>
-      </a>
-      <div class="space-x-4">
-        <a href="{{ url_for('home') }}" class="uh-link">Home</a>
-        <a href="{{ url_for('contact') }}" class="uh-link">Contact</a>
-        <a href="{{ url_for('privacy') }}" class="uh-link">Privacy</a>
-        <a href="{{ url_for('terms') }}" class="uh-link">Terms</a>
-        <a href="{{ url_for('admin') }}" class="uh-link">Admin</a>
-      </div>
-    </div>
-  </nav>
+{% extends "base.html" %}
+{% block content %}
 
-  <!-- Hero -->
-  <header class="uh-hero py-16 text-center">
-    <h1 class="text-4xl font-extrabold">About Underground Heat</h1>
-    <p class="mt-2 text-lg">Spotlighting the next wave of artists.</p>
-  </header>
+<section class="about">
+  <h2>About Underground Heat</h2>
+  <p>Underground Heat is the #1 platform for showcasing independent artists across the nation. 
+  Our mission is to give rising stars a stage, provide entertainment, and create opportunities in music and media production.</p>
+</section>
 
-  <!-- Body -->
-  <main class="max-w-4xl mx-auto p-6 space-y-8">
-    <section>
-      <h2 class="text-2xl font-bold mb-3">Our Story</h2>
-      <p>
-        Underground Heat is a music platform and show that elevates undiscovered
-        talent. We celebrate creativity, give artists a stage, and connect fans
-        with the culture—raw, unfiltered, and loud.
-      </p>
-    </section>
-
-    <section>
-      <h2 class="text-2xl font-bold mb-3">What We Stand For</h2>
-      <ul class="list-disc list-inside space-y-1">
-        <li>Artists first</li>
-        <li>Real community over clout</li>
-        <li>Consistency beats hype</li>
-        <li>Culture, not algorithms</li>
-      </ul>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <footer class="bg-black text-white py-6 mt-12 text-center">
-    <p>&copy; {{ current_year }} Underground Heat</p>
-  </footer>
-</body>
-</html>
+{% endblock %}
