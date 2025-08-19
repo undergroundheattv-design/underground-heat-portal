@@ -1,26 +1,24 @@
 import os
+from datetime import datetime
 import smtplib, ssl
 from email.message import EmailMessage
-from flask import Flask, render_template, request, redirect, url_for
+
+from flask import Flask, render_template, request, redirect, url_for, abort
 from jinja2 import TemplateNotFound
 
-# Detect template/static folder names (handles Templates/Static too)
-TEMPLATE_DIR = "templates" if os.path.isdir("templates") else ("Templates" if os.path.isdir("Templates") else None)
-STATIC_DIR   = "static"   if os.path.isdir("static")   else ("Static"   if os.path.isdir("Static")   else None)
+# If your folders are named exactly "templates" and "static", this is fine:
+app = Flask(__name__, template_folder="templates", static_folder="static")
 
-app = Flask(__name__, template_folder=TEMPLATE_DIR, static_folder=STATIC_DIR)
-
+# -------- helpers --------
 def render_or_fallback(template_name: str, fallback_html: str, **ctx):
+    """Try to render a Jinja template; if it's missing, use simple fallback HTML."""
     try:
-        if app.template_folder:
-            return render_template(template_name, **ctx)
-        raise TemplateNotFound(template_name)
+        return render_template(template_name, **ctx)
     except TemplateNotFound:
-        # Show a minimal inline page instead of 500
         return fallback_html
 
 def send_alert_email(subject: str, body: str) -> None:
-    """Optional SMTP alert (skips quietly if not configured)."""
+    """Send an email via SMTP if env vars are present (optional)."""
     to_email  = os.getenv("ALERT_TO_EMAIL")
     smtp_host = os.getenv("SMTP_HOST")
     smtp_user = os.getenv("SMTP_USER")
@@ -29,13 +27,16 @@ def send_alert_email(subject: str, body: str) -> None:
     from_email = os.getenv("FROM_EMAIL", smtp_user or "noreply@undergroundheat.local")
 
     if not (to_email and smtp_host and smtp_user and smtp_pass):
-        print("[EMAIL] Skipping send (missing SMTP env vars).")
+        print("[EMAIL] Skipping send — missing SMTP env vars.")
         return
 
     msg = EmailMessage()
     msg["Subject"] = subject
     msg["From"] = from_email
     msg["To"] = to_email
+    # Optional Reply-To
+    if os.getenv("REPLY_TO"):
+        msg["Reply-To"] = os.getenv("REPLY_TO")
     msg.set_content(body)
 
     timeout = 20
@@ -53,74 +54,56 @@ def send_alert_email(subject: str, body: str) -> None:
             server.login(smtp_user, smtp_pass)
             server.send_message(msg)
 
-@app.route("/", methods=["GET"])
+# -------- routes --------
+@app.route("/")
 def home():
-    return render_or_fallback(
-        "home.html",
-        """<!doctype html><html><body style="font-family:Arial;padding:24px">
-        <h1>Underground Heat — It works 🔥</h1>
-        <ul>
-          <li><a href="/submit">Submit form</a></li>
-          <li><a href="/email-test">Email test</a></li>
-          <li><a href="/healthz">Health</a></li>
-        </ul>
-        <p>(Showing fallback because templates/home.html not found.)</p>
-        </body></html>"""
-    )
+    return render_template("home.html", current_year=datetime.now().year)
 
 @app.route("/submit", methods=["GET"])
 def submit_get():
-    return render_or_fallback(
-        "form.html",
-        """<!doctype html><html><body style="font-family:Arial;padding:24px">
-        <h2>Artist Submission (fallback)</h2>
-        <form method="post" action="/submit">
-          <div><label>Artist Name <input name="artist_name" required></label></div>
-          <div><label>Email <input type="email" name="email" required></label></div>
-          <div><label>Video Link <input name="video_link" required></label></div>
-          <button type="submit">Send</button>
-        </form>
-        <p><a href="/">← Back</a></p>
-        </body></html>"""
-    )
+    return render_template("form.html")
 
 @app.route("/submit", methods=["POST"])
 def submit_post():
-    artist_name = (request.form.get("artist_name") or "").strip()
-    email       = (request.form.get("email") or "").strip()
-    video_link  = (request.form.get("video_link") or "").strip()
+    artist = (request.form.get("artist_name") or "").strip()
+    email  = (request.form.get("email") or "").strip()
+    video  = (request.form.get("video_link") or "").strip()
 
     body = f"""New submission received:
 
-Artist: {artist_name or "-"}
+Artist: {artist or "-"}
 Email:  {email or "-"}
-Video:  {video_link or "-"}
+Video:  {video or "-"}
 """
     try:
         send_alert_email("New Underground Heat submission", body)
-        print("[EMAIL] Submission alert attempted.")
+        print("[EMAIL] Submission alert sent (or skipped if not configured).")
     except Exception as e:
         print("[EMAIL] Failed to send alert:", e)
 
     return redirect(url_for("success"))
 
-@app.route("/success", methods=["GET"])
+@app.route("/success")
 def success():
-    return render_or_fallback(
-        "success.html",
-        """<!doctype html><html><body style="font-family:Arial;padding:24px;text-align:center">
-        <h2>Thank you! ✅</h2>
-        <p>Your submission was received.</p>
-        <p><a href="/">Go home</a></p>
-        <p>(Showing fallback because templates/success.html not found.)</p>
-        </body></html>"""
-    )
+    return render_template("success.html")
 
-@app.route("/healthz", methods=["GET"])
-def healthz():
-    return "ok"
+@app.route("/privacy")
+def privacy():
+    return render_template("privacy.html", last_updated="August 2025")
 
-@app.route("/email-test", methods=["GET"])
+@app.route("/terms")
+def terms():
+    return render_template("terms.html", last_updated="August 2025")
+
+@app.route("/admin")
+def admin():
+    # simple key gate
+    if request.args.get("key") != os.getenv("ADMIN_PASSWORD", "changeme"):
+        return abort(401)
+    # You can add real data later; for now just render the page.
+    return render_template("admin.html")
+
+@app.route("/email-test")
 def email_test():
     try:
         send_alert_email("Underground Heat — Email Test", "If you see this, SMTP works.")
@@ -128,36 +111,10 @@ def email_test():
     except Exception as e:
         return f"Failed ❌: {e}", 500
 
+@app.route("/healthz")
+def healthz():
+    return "ok"
+
+# -------- local run --------
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", "5000")), debug=True)
-from flask import abort
-
-@app.route("/privacy")
-def privacy():
-    return render_template(
-        "privacy.html",
-        last_updated="August 2025",
-        contact_email=os.getenv("CONTACT_EMAIL", "info@undergroundheat.tv"),
-    )
-
-@app.route("/terms")
-def terms():
-    return render_template(
-        "terms.html",
-        last_updated="August 2025",
-        contact_email=os.getenv("CONTACT_EMAIL", "info@undergroundheat.tv"),
-    )
-
-@app.route("/admin")
-def admin():
-    # Simple password check: visit /admin?key=YOUR_PASSWORD
-    admin_key = os.getenv("ADMIN_PASSWORD", "changeme")
-    if (request.args.get("key") or "") != admin_key:
-        return abort(401)
-    # If you don’t have a DB wired yet, keep rows empty:
-    rows = []
-    return render_template("admin.html", rows=rows)
-@app.route("/")
-def home():
-    from datetime import datetime
-    return render_template("home.html", current_year=datetime.now().year)
