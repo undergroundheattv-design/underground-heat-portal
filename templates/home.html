@@ -1,83 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Underground Heat</title>
+  <meta charset="UTF-8">
+  <title>Home - My Flask App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #111;
-      color: #fff;
       margin: 0;
       padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+      line-height: 1.6;
+      background-color: #f9f9f9;
     }
-    .card {
-      background: #222;
-      border-radius: 10px;
-      padding: 30px;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-      max-width: 500px;
-      width: 90%;
-    }
-    h1 {
-      margin: 0 0 10px;
-      font-size: 28px;
-    }
-    p {
-      margin: 0 0 20px;
-      font-size: 16px;
-      color: #ccc;
-    }
-    .btn {
-      display: inline-block;
-      background: #e50914;
+    header {
+      background: #333;
       color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav {
+      margin: 1rem 0;
+      text-align: center;
+    }
+    nav a {
+      margin: 0 15px;
       text-decoration: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      margin-bottom: 20px;
+      color: #333;
       font-weight: bold;
     }
-    .btn:hover {
-      background: #b20710;
+    nav a:hover {
+      color: #007BFF;
     }
-    .links {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px;
+    main {
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
     }
-    .links li a {
-      color: #1db954;
-      text-decoration: none;
-      font-size: 14px;
-    }
-    .links li a:hover {
-      text-decoration: underline;
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #333;
+      color: #fff;
+      margin-top: 2rem;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Underground Heat 🔥</h1>
-    <p>Welcome to the portal.</p>
-    <a class="btn" href="/submit">Submit Your Video</a>
-    <ul class="links">
-      <li><a href="/email-test">Email Test</a></li>
-      <li><a href="/healthz">Health</a></li>
-      <li><a href="/privacy">Privacy</a></li>
-      <li><a href="/terms">Terms</a></li>
-      <li><a href="/admin">Admin</a></li>
-    </ul>
-  </div>
+  <header>
+    <h1>Welcome to My Flask App</h1>
+    <p>A simple demo site with multiple pages</p>
+  </header>
+
+  <nav>
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('about') }}">About</a>
+    <a href="{{ url_for('contact') }}">Contact</a>
+    <a href="{{ url_for('privacy') }}">Privacy</a>
+    <a href="{{ url_for('terms') }}">Terms</a>
+    <a href="{{ url_for('admin') }}">Admin</a>
+  </nav>
+
+  <main>
+    <h2>Home Page</h2>
+    <p>This is the homepage of your Flask app. You can customize this text with your own content.</p>
+    <p>Use the navigation links above to explore the other pages.</p>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 My Flask App. All rights reserved.</p>
+  </footer>
 </body>
 </html>
