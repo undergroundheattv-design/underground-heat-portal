@@ -4,51 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Go Get It The Movement</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Simple Tailwind CDN for quick styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <!-- Header -->
-    <header>
-        <h1>Welcome to Go Get It The Movement</h1>
-        <nav>
-            <a href="{{ url_for('home') }}">Home</a>
-            <a href="{{ url_for('about') }}">About</a>
-            <a href="{{ url_for('contact') }}">Contact</a>
-            <a href="{{ url_for('privacy') }}">Privacy</a>
-            <a href="{{ url_for('terms') }}">Terms</a>
-            <a href="{{ url_for('admin') }}">Admin</a>
-        </nav>
-    </header>
+<body class="bg-gray-100 text-gray-900">
 
-    <!-- Main Content -->
-    <main>
-        <section>
-            <h2>Our Mission</h2>
-            <p>
-                Go Get It The Movement is here to inspire, motivate, and empower dreamers 
-                to reach their goals. We provide resources, tools, and encouragement 
-                to help you achieve your vision.
-            </p>
-        </section>
+    <!-- Navigation Bar -->
+    <nav class="bg-black text-white p-4 flex justify-between items-center">
+        <a href="{{ url_for('home') }}" class="text-xl font-bold">Go Get It The Movement</a>
+        <div class="space-x-4">
+            <a href="{{ url_for('about') }}" class="hover:text-yellow-400">About</a>
+            <a href="{{ url_for('contact') }}" class="hover:text-yellow-400">Contact</a>
+            <a href="{{ url_for('privacy') }}" class="hover:text-yellow-400">Privacy</a>
+            <a href="{{ url_for('terms') }}" class="hover:text-yellow-400">Terms</a>
+            <a href="{{ url_for('admin') }}" class="hover:text-yellow-400">Admin</a>
+        </div>
+    </nav>
 
-        <section>
-            <h2>Join The Movement</h2>
+    <!-- Hero Section -->
+    <section class="bg-yellow-400 py-20 text-center">
+        <h1 class="text-4xl font-extrabold mb-4">Welcome to Go Get It The Movement</h1>
+        <p class="text-lg max-w-2xl mx-auto">
+            Empowering people to chase their dreams with purpose, passion, and vision.
+        </p>
+        <a href="{{ url_for('about') }}" class="mt-6 inline-block px-6 py-3 bg-black text-white rounded-lg shadow hover:bg-gray-800">
+            Learn More
+        </a>
+    </section>
+
+    <!-- Content Section -->
+    <section class="py-12 px-6 max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
+        <div>
+            <h2 class="text-2xl font-bold mb-4">Our Mission</h2>
             <p>
-                Be part of a growing community of ambitious, driven individuals. 
-                Connect with us on social media, subscribe to our newsletter, and 
-                never miss an update.
+                We believe in motivating, educating, and inspiring individuals to take action on their goals. 
+                Go Get It The Movement is more than a brand — it’s a lifestyle. Whether you’re chasing success in business, 
+                personal growth, or creativity, we’re here to support you every step of the way.
             </p>
-            <a href="{{ url_for('contact') }}" class="btn">Get In Touch</a>
-        </section>
-    </main>
+        </div>
+        <div>
+            <h2 class="text-2xl font-bold mb-4">What We Offer</h2>
+            <ul class="list-disc list-inside space-y-2">
+                <li>Daily motivation and empowerment</li>
+                <li>Business and personal growth strategies</li>
+                <li>Community-driven support and collaboration</li>
+                <li>Exclusive content, events, and opportunities</li>
+            </ul>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer>
-        <p>&copy; {{ current_year }} Go Get It The Movement. All rights reserved.</p>
-        <p>
-            <a href="{{ url_for('privacy') }}">Privacy Policy</a> | 
-            <a href="{{ url_for('terms') }}">Terms of Service</a>
-        </p>
+    <footer class="bg-black text-white py-6 mt-12 text-center">
+        <p>&copy; {{ 2025 }} Go Get It The Movement. All rights reserved.</p>
+        <div class="space-x-4 mt-2">
+            <a href="{{ url_for('privacy') }}" class="hover:text-yellow-400">Privacy Policy</a>
+            <a href="{{ url_for('terms') }}" class="hover:text-yellow-400">Terms of Service</a>
+        </div>
     </footer>
+
 </body>
 </html>
