@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="submit-form">
+  <h2>Submit Your Music</h2>
+  <p>Upload your latest track or video for a chance to be featured on Underground Heat.</p>
+
+  <form action="{{ url_for('submit_music') }}" method="post" enctype="multipart/form-data">
+    <label for="artist_name">Artist Name:</label>
+    <input type="text" id="artist_name" name="artist_name" required>
+
+    <label for="song_title">Song Title:</label>
+    <input type="text" id="song_title" name="song_title" required>
+
+    <label for="file">Upload File:</label>
+    <input type="file" id="file" name="file" required>
+
+    <button type="submit">Submit</button>
+  </form>
+</section>
+
+{% endblock %}
