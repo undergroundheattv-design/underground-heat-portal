@@ -1,15 +1,15 @@
 import os
+import smtplib, ssl
+from email.message import EmailMessage
 from flask import Flask, request, redirect, url_for, render_template
 from jinja2 import TemplateNotFound
 
-# If your folders are named "Templates" / "Static" (capitalized), Flask on Linux is case-sensitive.
-# This makes Flask look in either lowercase or capitalized folders.
+# Case-sensitive template/static folder handling (Linux)
 TEMPLATE_DIR = "templates" if os.path.isdir("templates") else ("Templates" if os.path.isdir("Templates") else None)
 STATIC_DIR   = "static"   if os.path.isdir("static")   else ("Static"   if os.path.isdir("Static")   else None)
 
 app = Flask(__name__, template_folder=TEMPLATE_DIR, static_folder=STATIC_DIR)
 
-# --------- Helpers: safe render with fallback HTML ----------
 def render_or_fallback(template_name: str, fallback_html: str, **ctx):
     try:
         if app.template_folder:
@@ -18,7 +18,40 @@ def render_or_fallback(template_name: str, fallback_html: str, **ctx):
     except TemplateNotFound:
         return fallback_html
 
-# ---------------------- Routes ------------------------------
+def send_alert_email(subject: str, body: str) -> None:
+    """Send an email via SMTP if env vars are present."""
+    to_email  = os.getenv("ALERT_TO_EMAIL")
+    smtp_host = os.getenv("SMTP_HOST")
+    smtp_user = os.getenv("SMTP_USER")
+    smtp_pass = os.getenv("SMTP_PASS")
+    smtp_port = int(os.getenv("SMTP_PORT", "587"))
+    from_email = os.getenv("FROM_EMAIL", smtp_user or "noreply@undergroundheat.local")
+
+    if not (to_email and smtp_host and smtp_user and smtp_pass):
+        print("[EMAIL] Skipping send (missing SMTP env vars).")
+        return
+
+    msg = EmailMessage()
+    msg["Subject"] = subject
+    msg["From"] = from_email
+    msg["To"] = to_email
+    msg.set_content(body)
+
+    timeout = 20
+    if smtp_port == 465:
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL(smtp_host, smtp_port, context=context, timeout=timeout) as server:
+            server.login(smtp_user, smtp_pass)
+            server.send_message(msg)
+    else:
+        with smtplib.SMTP(smtp_host, smtp_port, timeout=timeout) as server:
+            context = ssl.create_default_context()
+            server.ehlo()
+            server.starttls(context=context)
+            server.ehlo()
+            server.login(smtp_user, smtp_pass)
+            server.send_message(msg)
+
 @app.route("/")
 def home():
     return render_or_fallback(
@@ -28,13 +61,11 @@ def home():
   <head><meta charset="utf-8"><title>Underground Heat</title></head>
   <body style="font-family:Arial; padding:24px;">
     <h1>Underground Heat — It works! 🔥</h1>
-    <p>Your Flask app is running on Render.</p>
     <ul>
       <li><a href="/submit">Submit form</a></li>
-      <li><a href="/email-test">Email test route</a></li>
-      <li><a href="/healthz">Health check</a></li>
+      <li><a href="/email-test">Email test</a></li>
+      <li><a href="/healthz">Health</a></li>
     </ul>
-    <p>(Once you add real templates, this page will automatically use them.)</p>
   </body>
 </html>"""
     )
@@ -47,7 +78,7 @@ def submit_get():
 <html>
   <head><meta charset="utf-8"><title>Submit | Underground Heat</title></head>
   <body style="font-family:Arial; padding:24px;">
-    <h2>Artist Submission (demo form)</h2>
+    <h2>Artist Submission</h2>
     <form method="post" action="/submit">
       <div><label>Artist Name <input name="artist_name" required></label></div>
       <div><label>Email <input type="email" name="email" required></label></div>
@@ -61,10 +92,23 @@ def submit_get():
 
 @app.route("/submit", methods=["POST"])
 def submit_post():
-    # For this first deploy we’ll just accept the data and show a Thank You.
-    # (We’ll wire DB + email next.)
-    artist = request.form.get("artist_name", "").strip()
-    print("[FORM] Received submission from:", artist or "(no name)")
+    artist = (request.form.get("artist_name") or "").strip()
+    email  = (request.form.get("email") or "").strip()
+    video  = (request.form.get("video_link") or "").strip()
+
+    # Send alert email
+    body = f"""New submission received:
+
+Artist: {artist or "-"}
+Email: {email or "-"}
+Video: {video or "-"}
+"""
+    try:
+        send_alert_email("New Underground Heat submission", body)
+        print("[EMAIL] Submission alert sent.")
+    except Exception as e:
+        print("[EMAIL] Failed to send alert:", e)
+
     return redirect(url_for("success"))
 
 @app.route("/success")
@@ -84,15 +128,15 @@ def success():
 
 @app.route("/email-test")
 def email_test():
-    # Placeholder so the route exists and proves routing is good.
-    # We’ll hook this up to SendGrid once the base app is live.
-    return """Email test route is live. (Not sending yet — we’ll wire SMTP next.)"""
+    try:
+        send_alert_email("Underground Heat — Email Test", "If you see this, SMTP works.")
+        return "Sent ✅"
+    except Exception as e:
+        return f"Failed ❌: {e}", 500
 
 @app.route("/healthz")
 def healthz():
     return "ok"
 
-# --------------- Dev server (ignored by gunicorn) ---------------
 if __name__ == "__main__":
-    # Local run: python app.py
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", "5000")), debug=True)
