@@ -1,23 +1,41 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="hero">
-  <h2>Welcome to Underground Heat</h2>
-  <p>The hottest new music show highlighting underground talent across the nation.</p>
-  <a href="{{ url_for('submit') }}" class="cta-btn">Submit Your Music</a>
-</div>
+<!-- templates/home.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Underground Heat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#f5f676] text-[#1c0b3a]">
+  <nav class="bg-[#1c0b3a] text-white p-4 flex justify-between">
+    <a href="{{ url_for('home') }}" class="font-bold text-[#fb7b14]">Underground Heat</a>
+    <div class="space-x-4">
+      <a href="{{ url_for('about') }}" class="hover:text-[#fb7b14]">About</a>
+      <a href="{{ url_for('contact') }}" class="hover:text-[#fb7b14]">Contact</a>
+      <a href="{{ url_for('privacy') }}" class="hover:text-[#fb7b14]">Privacy</a>
+      <a href="{{ url_for('terms') }}" class="hover:text-[#fb7b14]">Terms</a>
+      <a href="{{ url_for('admin') }}" class="hover:text-[#fb7b14]">Admin</a>
+    </div>
+  </nav>
 
-<div class="features">
-  <div class="card">
-    <h3>🔥 Music Videos</h3>
-    <p>Get your visuals featured on our national platform.</p>
-  </div>
-  <div class="card">
-    <h3>🎙️ Interviews</h3>
-    <p>We spotlight artists, producers, and DJs changing the game.</p>
-  </div>
-  <div class="card">
-    <h3>🌎 Streaming</h3>
-    <p>Watch episodes live on Fire Stick, Roku, mobile, and TV apps.</p>
-  </div>
-</div>
-{% endblock %}
+  <header class="bg-[#fb7b14] py-20 text-center text-white">
+    <h1 class="text-5xl font-extrabold">Welcome to Underground Heat</h1>
+    <p class="mt-4 text-xl font-medium">The hottest underground music video show in the game</p>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-6 text-lg space-y-6">
+    <p>
+      Underground Heat is your destination for discovering raw talent, exclusive interviews,
+      and high-energy performances. We spotlight the underground artists you need to know — from Memphis and beyond.
+    </p>
+    <p class="text-[#780e38] font-semibold">
+      Subscribe. Submit your videos. Join the movement.
+    </p>
+  </main>
+
+  <footer class="bg-[#1c0b3a] text-white py-6 text-center mt-12">
+    <p>&copy; {{ current_year }} Underground Heat</p>
+  </footer>
+</body>
+</html>
