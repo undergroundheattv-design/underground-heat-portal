@@ -1,25 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="hero">
+  <h2>Welcome to Underground Heat</h2>
+  <p>The hottest new music show highlighting underground talent across the nation.</p>
+  <a href="{{ url_for('submit') }}" class="cta-btn">Submit Your Music</a>
+</div>
 
-<section class="hero">
-  <h2>The Hottest Underground Music Show</h2>
-  <p>Showcasing talent from all over the nation. Watch live performances, exclusive interviews, and the latest underground hits.</p>
-  <a class="cta-btn" href="{{ url_for('submit_music') }}">Submit Your Music</a>
-</section>
-
-<section class="features">
+<div class="features">
   <div class="card">
-    <h3>🔥 Weekly Premieres</h3>
-    <p>Catch the freshest tracks and videos every week.</p>
+    <h3>🔥 Music Videos</h3>
+    <p>Get your visuals featured on our national platform.</p>
   </div>
   <div class="card">
-    <h3>🎤 Artist Interviews</h3>
-    <p>Learn the stories behind the music from rising stars.</p>
+    <h3>🎙️ Interviews</h3>
+    <p>We spotlight artists, producers, and DJs changing the game.</p>
   </div>
   <div class="card">
-    <h3>📺 Watch Anywhere</h3>
-    <p>Available on web, TV, Roku, Fire Stick, and mobile apps.</p>
+    <h3>🌎 Streaming</h3>
+    <p>Watch episodes live on Fire Stick, Roku, mobile, and TV apps.</p>
   </div>
-</section>
-
+</div>
 {% endblock %}
