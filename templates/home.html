@@ -1,54 +1,72 @@
-<!-- templates/home.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Underground Heat</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{
+      --c-orange: {{ brand.orange }};
+      --c-light:  {{ brand.light_gray }};
+      --c-pink:   {{ brand.dark_pink }};
+      --c-purple: {{ brand.dark_purple }};
+      --c-green:  {{ brand.green }};
+    }
+  </style>
 </head>
-<body class="bg-gray-100 text-[#1c0b3a]">
-  <!-- Navigation Bar -->
-  <nav class="bg-[#1c0b3a] text-white p-4 flex justify-between items-center">
-    <a href="{{ url_for('home') }}" class="text-2xl font-bold text-[#fb7b14]">Underground Heat</a>
-    <div class="space-x-6 text-sm font-medium">
-      <a href="{{ url_for('about') }}" class="hover:text-[#fb7b14]">About</a>
-      <a href="{{ url_for('contact') }}" class="hover:text-[#fb7b14]">Contact</a>
-      <a href="{{ url_for('privacy') }}" class="hover:text-[#fb7b14]">Privacy</a>
-      <a href="{{ url_for('terms') }}" class="hover:text-[#fb7b14]">Terms</a>
-      <a href="{{ url_for('admin') }}" class="hover:text-[#fb7b14]">Admin</a>
+<body class="min-h-screen text-white" style="background:radial-gradient(80% 120% at 0% 0%, var(--c-pink), transparent 50%) , var(--c-purple)">
+
+  <!-- NAV -->
+  <nav class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+    <a href="{{ url_for('home') }}" class="flex items-center gap-3 font-extrabold text-xl">
+      <img src="{{ brand.logo_url }}" alt="Underground Heat logo" class="w-10 h-10 rounded-md shadow" />
+      <span>{{ brand.name }}</span>
+    </a>
+    <div class="flex items-center gap-6 text-sm">
+      <a href="{{ url_for('about') }}"   class="hover:text-[var(--c-light)]">About</a>
+      <a href="{{ url_for('contact') }}" class="hover:text-[var(--c-light)]">Contact</a>
+      <a href="{{ url_for('privacy') }}" class="hover:text-[var(--c-light)]">Privacy</a>
+      <a href="{{ url_for('terms') }}"   class="hover:text-[var(--c-light)]">Terms</a>
+      <a href="{{ url_for('admin') }}?key=changeme" class="hover:text-[var(--c-light)]">Admin</a>
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <header class="bg-[#fb7b14] text-white py-20 text-center">
-    <h1 class="text-5xl font-extrabold">Welcome to Underground Heat</h1>
-    <p class="mt-4 text-xl">Your #1 Source for the Hottest Underground Music</p>
+  <!-- HERO -->
+  <header class="max-w-6xl mx-auto px-4 mt-6">
+    <div class="rounded-2xl p-8 md:p-12 shadow-xl"
+         style="background:linear-gradient(135deg,var(--c-orange),var(--c-pink));">
+      <h1 class="text-4xl md:text-5xl font-extrabold">Underground Heat</h1>
+      <p class="mt-3 text-lg opacity-95">The independent music show turning raw talent into a spotlight.</p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="{{ url_for('contact') }}"
+           class="px-5 py-3 rounded-lg font-bold text-black"
+           style="background:var(--c-light);">Get in touch</a>
+        <a href="{{ url_for('about') }}"
+           class="px-5 py-3 rounded-lg font-bold border"
+           style="border-color:rgba(255,255,255,.25)">Learn more</a>
+      </div>
+    </div>
   </header>
 
-  <!-- Main Content -->
-  <main class="max-w-4xl mx-auto p-8 text-lg space-y-6">
-    <p>
-      <strong>Underground Heat</strong> is a movement — a platform for rising artists, passionate creatives,
-      and the culture they’re shaping. From exclusive music videos and interviews to viral underground tracks,
-      we’re fueling the fire of raw talent and real stories.
-    </p>
-
-    <p>
-      We work directly with artists, fans, schools, and communities to spotlight new voices,
-      open doors in the entertainment industry, and turn dreams into reality.
-    </p>
-
-    <div class="p-4 bg-[#f5f676] border-l-4 border-[#fb7b14] rounded">
-      <p class="text-[#780e38] font-semibold">
-        🎤 Submit your music videos, get featured, and join the next wave of heat.
-      </p>
+  <!-- FEATURES -->
+  <main class="max-w-6xl mx-auto px-4 py-12 grid md:grid-cols-3 gap-6">
+    <div class="rounded-xl p-6 bg-white/5 border border-white/10">
+      <h3 class="font-bold text-lg mb-1">Real Artists</h3>
+      <p class="text-white/80">We highlight independent artists with something to say and a show to prove.</p>
+    </div>
+    <div class="rounded-xl p-6 bg-white/5 border border-white/10">
+      <h3 class="font-bold text-lg mb-1">Real Reactions</h3>
+      <p class="text-white/80">Performances, premieres, and honest crowd energy—no fluff.</p>
+    </div>
+    <div class="rounded-xl p-6 bg-white/5 border border-white/10">
+      <h3 class="font-bold text-lg mb-1">Real Platform</h3>
+      <p class="text-white/80">Clips, socials, and distribution that push great moments further.</p>
     </div>
   </main>
 
-  <!-- Footer -->
-  <footer class="bg-[#1c0b3a] text-white py-6 text-center mt-12">
-    <p>&copy; {{ current_year }} Underground Heat. All rights reserved.</p>
+  <footer class="mt-10 py-8 text-center text-white/80 border-t border-white/10">
+    <p>&copy; {{ current_year }} {{ brand.name }}</p>
   </footer>
 </body>
 </html>
