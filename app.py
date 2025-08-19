@@ -130,4 +130,30 @@ def email_test():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", "5000")), debug=True)
+from flask import abort
 
+@app.route("/privacy")
+def privacy():
+    return render_template(
+        "privacy.html",
+        last_updated="August 2025",
+        contact_email=os.getenv("CONTACT_EMAIL", "info@undergroundheat.tv"),
+    )
+
+@app.route("/terms")
+def terms():
+    return render_template(
+        "terms.html",
+        last_updated="August 2025",
+        contact_email=os.getenv("CONTACT_EMAIL", "info@undergroundheat.tv"),
+    )
+
+@app.route("/admin")
+def admin():
+    # Simple password check: visit /admin?key=YOUR_PASSWORD
+    admin_key = os.getenv("ADMIN_PASSWORD", "changeme")
+    if (request.args.get("key") or "") != admin_key:
+        return abort(401)
+    # If you don’t have a DB wired yet, keep rows empty:
+    rows = []
+    return render_template("admin.html", rows=rows)
