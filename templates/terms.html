@@ -1,1 +1,32 @@
-
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Terms of Service | Underground Heat</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body{font-family:system-ui,Segoe UI,Arial,sans-serif;margin:0;background:#0b0b2a;color:#fff}
+    .wrap{max-width:880px;margin:40px auto;padding:24px}
+    .card{background:#15153a;border-radius:16px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    h1{margin:0 0 12px}
+    a{color:#ffb84d;text-decoration:none}
+    a:hover{text-decoration:underline}
+    p,li{color:#cfd3ff}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Terms of Service</h1>
+      <p>Last updated: {{ last_updated or "—" }}</p>
+      <ul>
+        <li>By submitting content, you confirm you own the rights or have permission.</li>
+        <li>We may feature, excerpt, or share your submission across Underground Heat properties.</li>
+        <li>We may remove content at our discretion.</li>
+      </ul>
+      <p>Questions? <a href="mailto:{{ contact_email or 'info@undergroundheat.tv' }}">{{ contact_email or 'info@undergroundheat.tv' }}</a></p>
+      <p><a href="/">← Back home</a></p>
+    </div>
+  </div>
+</body>
+</html>
