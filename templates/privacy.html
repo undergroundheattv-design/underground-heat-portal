@@ -1,1 +1,32 @@
-
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Privacy Policy | Underground Heat</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body{font-family:system-ui,Segoe UI,Arial,sans-serif;margin:0;background:#0b0b2a;color:#fff}
+    .wrap{max-width:880px;margin:40px auto;padding:24px}
+    .card{background:#15153a;border-radius:16px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    h1{margin:0 0 12px}
+    a{color:#ffb84d;text-decoration:none}
+    a:hover{text-decoration:underline}
+    p,li{color:#cfd3ff}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Privacy Policy</h1>
+      <p>Last updated: {{ last_updated or "—" }}</p>
+      <p>We collect the information you submit (like name, email, links) to review your content and contact you.</p>
+      <ul>
+        <li>We don’t sell your data.</li>
+        <li>We may email you about Underground Heat updates.</li>
+        <li>You can request deletion via <a href="mailto:{{ contact_email or 'info@undergroundheat.tv' }}">{{ contact_email or 'info@undergroundheat.tv' }}</a>.</li>
+      </ul>
+      <p><a href="/">← Back home</a></p>
+    </div>
+  </div>
+</body>
+</html>
