@@ -1,73 +1,178 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
-from datetime import datetime
 import os
-import csv
+import smtplib
+import ssl
+from datetime import datetime
+from email.message import EmailMessage
 
-app = Flask(__name__)
-app.secret_key = 'supersecretkey'  # change this in production
+from flask import Flask, render_template, request, abort
 
-UPLOAD_FOLDER = 'static/uploads'
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+# -----------------------------------------------------------------------------
+# App setup
+# -----------------------------------------------------------------------------
+app = Flask(__name__, template_folder="templates", static_folder="static")
+
+BRAND = {
+    "name": "Underground Heat",
+    # brand colors
+    "orange": "#fb7b14",
+    "light_gray": "#f5f676",
+    "dark_pink": "#780e38",
+    "dark_purple": "#1c0b3a",
+    "green": "#30ad3e",
+    # set your logo path (put your logo file in /static)
+    "logo_url": "/static/logo.png",
+}
 
 @app.context_processor
-def inject_year():
-    return {'year': datetime.now().year}
+def inject_brand():
+    """Make brand + current year available in every template."""
+    return {
+        "brand": BRAND,
+        "current_year": datetime.now().year,
+    }
 
-@app.route('/')
+# -----------------------------------------------------------------------------
+# Email helper (SMTP)
+# -----------------------------------------------------------------------------
+def send_email(subject: str, body: str, to_email: str | None = None) -> None:
+    """
+    Sends an email using SMTP settings from environment variables:
+
+      SMTP_HOST (required)
+      SMTP_PORT (default 587)
+      SMTP_USER (required)
+      SMTP_PASS (required)
+      ALERT_TO_EMAIL (default recipient if 'to_email' not provided)
+      FROM_EMAIL (optional; defaults to SMTP_USER)
+      REPLY_TO   (optional)
+
+    If required env vars are missing, the function logs and returns without error.
+    """
+    smtp_host = os.getenv("SMTP_HOST")
+    smtp_port = int(os.getenv("SMTP_PORT", "587"))
+    smtp_user = os.getenv("SMTP_USER")
+    smtp_pass = os.getenv("SMTP_PASS")
+
+    default_to = os.getenv("ALERT_TO_EMAIL")
+    recipient = to_email or default_to
+
+    if not (smtp_host and smtp_user and smtp_pass and recipient):
+        print("[EMAIL] Skipping send (missing SMTP_HOST/USER/PASS or recipient).")
+        return
+
+    from_addr = os.getenv("FROM_EMAIL", smtp_user)
+    reply_to = os.getenv("REPLY_TO")
+
+    msg = EmailMessage()
+    msg["Subject"] = subject
+    msg["From"] = from_addr
+    msg["To"] = recipient
+    if reply_to:
+        msg["Reply-To"] = reply_to
+    msg.set_content(body)
+
+    timeout = 20
+    context = ssl.create_default_context()
+
+    # SMTPS on 465 vs STARTTLS on 587/other
+    if smtp_port == 465:
+        with smtplib.SMTP_SSL(smtp_host, smtp_port, context=context, timeout=timeout) as s:
+            s.login(smtp_user, smtp_pass)
+            s.send_message(msg)
+    else:
+        with smtplib.SMTP(smtp_host, smtp_port, timeout=timeout) as s:
+            s.ehlo()
+            s.starttls(context=context)
+            s.ehlo()
+            s.login(smtp_user, smtp_pass)
+            s.send_message(msg)
+
+# -----------------------------------------------------------------------------
+# Routes
+# -----------------------------------------------------------------------------
+@app.route("/", methods=["GET"])
 def home():
-    return render_template('home.html')
+    return render_template("home.html")
 
-@app.route('/about')
+@app.route("/about", methods=["GET"])
 def about():
-    return render_template('about.html')
+    return render_template("about.html")
 
-@app.route('/submit', methods=['GET', 'POST'])
-def submit():
-    if request.method == 'POST':
-        artist_name = request.form['artist_name']
-        email = request.form['email']
-        video_link = request.form['video_link']
-        cover_art = request.files.get('cover_art')
-
-        filename = None
-        if cover_art and cover_art.filename:
-            filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{cover_art.filename}"
-            cover_art.save(os.path.join(UPLOAD_FOLDER, filename))
-
-        # Save submission to CSV
-        with open('submissions.csv', 'a', newline='') as csvfile:
-            writer = csv.writer(csvfile)
-            writer.writerow([datetime.now(), artist_name, email, video_link, filename])
-
-        return render_template('submit.html', message="Submission received!")
-    return render_template('submit.html')
-
-@app.route('/contact', methods=['GET', 'POST'])
+@app.route("/contact", methods=["GET", "POST"])
 def contact():
-    if request.method == 'POST':
-        name = request.form['name']
-        email = request.form['email']
-        message = request.form['message']
+    """
+    GET: render the contact form
+    POST: send an email with the submitted info and re-render with success/error
+    """
+    if request.method == "POST":
+        name = (request.form.get("name") or "").strip()
+        email = (request.form.get("email") or "").strip()
+        message = (request.form.get("message") or "").strip()
 
-        # Save contact to CSV
-        with open('messages.csv', 'a', newline='') as csvfile:
-            writer = csv.writer(csvfile)
-            writer.writerow([datetime.now(), name, email, message])
+        body = f"""New contact form message — Underground Heat
 
-        return render_template('contact.html', message="Message sent successfully!")
-    return render_template('contact.html')
+Name: {name or '-'}
+Email: {email or '-'}
 
-@app.route('/privacy')
+Message:
+{message or '-'}
+"""
+        try:
+            # Sends to ALERT_TO_EMAIL unless you pass a specific 'to_email'
+            send_email("Underground Heat — Contact Message", body)
+            return render_template("contact.html", success=True)
+        except Exception as e:
+            print("[EMAIL] contact send failed:", e)
+            return render_template("contact.html", error=True)
+
+    # GET
+    return render_template("contact.html")
+
+@app.route("/privacy", methods=["GET"])
 def privacy():
-    return render_template('privacy.html')
+    return render_template(
+        "privacy.html",
+        effective_date=os.getenv("PRIVACY_EFFECTIVE", "August 2025"),
+    )
 
-@app.route('/terms')
+@app.route("/terms", methods=["GET"])
 def terms():
-    return render_template('terms.html')
+    return render_template("terms.html")
 
-@app.route('/admin')
+@app.route("/admin", methods=["GET"])
 def admin():
-    return render_template('admin.html')
+    """
+    Simple gate: require ?key=<ADMIN_PASSWORD> in the query string.
+    Set ADMIN_PASSWORD in Render env. Defaults to 'changeme'.
+    """
+    admin_password = os.getenv("ADMIN_PASSWORD", "changeme")
+    if request.args.get("key") != admin_password:
+        return abort(401)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+    # Placeholder for future data (e.g., submissions from a DB)
+    rows: list[dict] = []
+    return render_template("admin.html", rows=rows)
+
+# Health & utilities -----------------------------------------------------------
+@app.route("/healthz", methods=["GET"])
+def healthz():
+    return "ok"
+
+@app.route("/email-test", methods=["GET"])
+def email_test():
+    """
+    Quick route to verify SMTP. It sends a test email to ALERT_TO_EMAIL.
+    """
+    try:
+        send_email("Underground Heat — Email Test", "If you see this, SMTP works.")
+        return "Sent ✅"
+    except Exception as e:
+        print("[EMAIL-TEST] Failed:", e)
+        return f"Failed ❌: {e}", 500
+
+# -----------------------------------------------------------------------------
+# Local dev entrypoint (Render runs gunicorn app:app)
+# -----------------------------------------------------------------------------
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", "5000"))
+    app.run(host="0.0.0.0", port=port, debug=True)
