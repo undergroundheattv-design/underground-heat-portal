@@ -157,3 +157,7 @@ def admin():
     # If you don’t have a DB wired yet, keep rows empty:
     rows = []
     return render_template("admin.html", rows=rows)
+@app.route("/")
+def home():
+    from datetime import datetime
+    return render_template("home.html", current_year=datetime.now().year)
