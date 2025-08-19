@@ -1,22 +1,72 @@
-{% extends "base.html" %}
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Contact • {{ brand.name }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{
+      --c-orange: {{ brand.orange }};
+      --c-light:  {{ brand.light_gray }};
+      --c-pink:   {{ brand.dark_pink }};
+      --c-purple: {{ brand.dark_purple }};
+      --c-green:  {{ brand.green }};
+    }
+  </style>
+</head>
+<body class="bg-[var(--c-purple)] text-white">
+  <!-- NAV -->
+  <nav class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+    <a href="{{ url_for('home') }}" class="flex items-center gap-3 font-extrabold text-xl">
+      <img src="{{ brand.logo_url }}" alt="Underground Heat logo" class="w-9 h-9 rounded-md shadow" />
+      <span>{{ brand.name }}</span>
+    </a>
+    <div class="flex items-center gap-6 text-sm">
+      <a href="{{ url_for('home') }}"   class="hover:text-[var(--c-light)]">Home</a>
+      <a href="{{ url_for('about') }}"  class="hover:text-[var(--c-light)]">About</a>
+      <a href="{{ url_for('privacy') }}" class="hover:text-[var(--c-light)]">Privacy</a>
+      <a href="{{ url_for('terms') }}"   class="hover:text-[var(--c-light)]">Terms</a>
+      <a href="{{ url_for('admin') }}?key=changeme" class="hover:text-[var(--c-light)]">Admin</a>
+    </div>
+  </nav>
 
-<section class="contact">
-  <h2>Contact Underground Heat</h2>
-  <p>Have questions, want to partner, or need more info? Reach out to us below.</p>
+  <header class="py-14 text-center"
+          style="background:linear-gradient(135deg,var(--c-orange),var(--c-pink));">
+    <h1 class="text-4xl font-extrabold">Contact Us</h1>
+    <p class="mt-2 text-lg">Promoters, artists, partners—let’s build.</p>
+  </header>
 
-  <form action="{{ url_for('contact') }}" method="post">
-    <label for="name">Your Name:</label>
-    <input type="text" id="name" name="name" required>
+  <main class="max-w-3xl mx-auto p-6">
+    {% if success %}
+      <div class="mb-6 p-4 rounded border" style="background:#093; border-color:#0b4;">
+        <p class="font-semibold">Thanks! Your message was sent.</p>
+      </div>
+    {% elif error %}
+      <div class="mb-6 p-4 rounded border" style="background:#5c0a1f; border-color:#9a1236;">
+        <p class="font-semibold">Something went wrong. Please try again.</p>
+      </div>
+    {% endif %}
 
-    <label for="email">Your Email:</label>
-    <input type="email" id="email" name="email" required>
+    <form method="post" action="{{ url_for('contact') }}" class="bg-white text-gray-900 p-6 rounded-xl shadow space-y-4">
+      <div>
+        <label class="block font-semibold mb-1">Name</label>
+        <input name="name" required class="w-full border rounded px-3 py-2" placeholder="Your name" />
+      </div>
+      <div>
+        <label class="block font-semibold mb-1">Email</label>
+        <input type="email" name="email" required class="w-full border rounded px-3 py-2" placeholder="you@example.com" />
+      </div>
+      <div>
+        <label class="block font-semibold mb-1">Message</label>
+        <textarea name="message" rows="5" required class="w-full border rounded px-3 py-2" placeholder="How can we help?"></textarea>
+      </div>
+      <button class="px-5 py-3 rounded-lg font-bold text-black" style="background:var(--c-light);">Send</button>
+    </form>
+  </main>
 
-    <label for="message">Your Message:</label>
-    <textarea id="message" name="message" rows="5" required></textarea>
-
-    <button type="submit">Send Message</button>
-  </form>
-</section>
-
-{% endblock %}
+  <footer class="bg-black/40 text-white/80 py-6 mt-12 text-center">
+    <p>&copy; {{ current_year }} {{ brand.name }}</p>
+  </footer>
+</body>
+</html>
