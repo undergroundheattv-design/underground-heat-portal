@@ -2,58 +2,98 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Admin • Go Get It The Movement</title>
+  <title>Admin • Underground Heat</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{
+      --uh-orange:#fb7b14;
+      --uh-lightgray:#f5f676;
+      --uh-pink:#780e38;
+      --uh-purple:#1c0b3a;
+      --uh-green:#30ad3e;
+    }
+    .uh-bg { background: var(--uh-purple); }
+    .uh-card { background:#15153a; }
+    .uh-link { color: var(--uh-lightgray); }
+    .uh-link:hover { color:#fff; text-decoration: underline; }
+    .pill { background: var(--uh-orange); color:#000; }
+  </style>
 </head>
-<body class="bg-gray-100 text-gray-900">
-  <nav class="bg-black text-white p-4 flex justify-between">
-    <a href="{{ url_for('home') }}" class="font-bold">Go Get It The Movement</a>
-    <div class="space-x-4">
-      <a href="{{ url_for('home') }}" class="hover:text-yellow-400">Home</a>
-      <a href="{{ url_for('about') }}" class="hover:text-yellow-400">About</a>
-      <a href="{{ url_for('contact') }}" class="hover:text-yellow-400">Contact</a>
-      <a href="{{ url_for('privacy') }}" class="hover:text-yellow-400">Privacy</a>
-      <a href="{{ url_for('terms') }}" class="hover:text-yellow-400">Terms</a>
+<body class="uh-bg text-white min-h-screen">
+  <!-- Nav -->
+  <nav class="bg-black/60 backdrop-blur p-4">
+    <div class="max-w-6xl mx-auto flex items-center justify-between gap-4">
+      <a href="{{ url_for('home') }}" class="flex items-center gap-3 font-extrabold tracking-wide">
+        <img src="/logo.png" alt="Underground Heat" class="h-8 w-auto" />
+        <span>Underground Heat</span>
+      </a>
+      <div class="flex items-center gap-5 text-sm">
+        <a href="{{ url_for('home') }}" class="uh-link">Home</a>
+        <a href="{{ url_for('about') }}" class="uh-link">About</a>
+        <a href="{{ url_for('contact') }}" class="uh-link">Contact</a>
+        <a href="{{ url_for('privacy') }}" class="uh-link">Privacy</a>
+        <a href="{{ url_for('terms') }}" class="uh-link">Terms</a>
+      </div>
     </div>
   </nav>
 
-  <header class="bg-yellow-400 py-16 text-center">
-    <h1 class="text-3xl font-extrabold">Admin Dashboard</h1>
-    <p class="mt-2">Private area — authorized users only.</p>
+  <!-- Header -->
+  <header class="py-10 px-4">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <h1 class="text-3xl md:text-4xl font-extrabold">Admin</h1>
+      <span class="pill px-3 py-1 rounded-full text-sm font-bold">Private</span>
+    </div>
   </header>
 
-  <main class="max-w-5xl mx-auto p-6 space-y-6">
-    {% if rows %}
-      <div class="bg-white rounded shadow overflow-x-auto">
-        <table class="min-w-full text-left">
-          <thead class="bg-gray-50">
-            <tr>
-              {% for h in rows[0].keys() %}
-                <th class="px-4 py-2 text-sm font-semibold text-gray-600 uppercase">{{ h }}</th>
-              {% endfor %}
-            </tr>
-          </thead>
-          <tbody>
-            {% for r in rows %}
-              <tr class="border-t">
-                {% for v in r.values() %}
-                  <td class="px-4 py-2 text-sm">{{ v if v is not none else "-" }}</td>
-                {% endfor %}
+  <!-- Content -->
+  <main class="max-w-6xl mx-auto px-4 pb-16 space-y-6">
+    <div class="uh-card rounded-2xl p-6">
+      <h2 class="text-xl font-bold">Submissions</h2>
+      <p class="text-indigo-200">This view expects a list of dicts in <code>rows</code> with keys like <code>artist</code>, <code>email</code>, <code>video</code>, <code>created_at</code>.</p>
+
+      {% if not rows or rows|length == 0 %}
+        <div class="mt-4 border border-white/10 rounded p-4 text-indigo-200">
+          No data yet.
+        </div>
+      {% else %}
+        <div class="mt-4 overflow-x-auto">
+          <table class="min-w-full text-sm">
+            <thead>
+              <tr class="text-left border-b border-white/10">
+                <th class="py-2 pr-4">Artist</th>
+                <th class="py-2 pr-4">Email</th>
+                <th class="py-2 pr-4">Video</th>
+                <th class="py-2 pr-4">Created</th>
               </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    {% else %}
-      <div class="bg-white rounded shadow p-6">
-        <p>No records to display yet.</p>
-      </div>
-    {% endif %}
+            </thead>
+            <tbody>
+              {% for r in rows %}
+              <tr class="border-b border-white/5">
+                <td class="py-2 pr-4">{{ r.get('artist','-') }}</td>
+                <td class="py-2 pr-4">
+                  {% if r.get('email') %}
+                    <a href="mailto:{{ r.get('email') }}" class="uh-link">{{ r.get('email') }}</a>
+                  {% else %}-{% endif %}
+                </td>
+                <td class="py-2 pr-4">
+                  {% if r.get('video') %}
+                    <a href="{{ r.get('video') }}" target="_blank" class="uh-link">Open</a>
+                  {% else %}-{% endif %}
+                </td>
+                <td class="py-2 pr-4">{{ r.get('created_at','-') }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endif %}
+    </div>
   </main>
 
-  <footer class="bg-black text-white py-6 mt-12 text-center">
-    <p>&copy; {{ current_year }} Go Get It The Movement</p>
+  <!-- Footer -->
+  <footer class="bg-black/70 py-6 mt-8 text-center text-sm text-indigo-200">
+    © {{ current_year }} Underground Heat
   </footer>
 </body>
 </html>
