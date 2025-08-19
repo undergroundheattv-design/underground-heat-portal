@@ -6,28 +6,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    :root{
-      --uh-orange:#fb7b14;
-      --uh-lightgray:#f5f676;
-      --uh-pink:#780e38;
-      --uh-purple:#1c0b3a;
-      --uh-green:#30ad3e;
-    }
-    .uh-bg { background: var(--uh-purple); }
-    .uh-card { background:#15153a; }
-    .uh-accent { color: var(--uh-orange); }
-    .uh-link { color: var(--uh-lightgray); }
-    .uh-link:hover { color:#fff; text-decoration: underline; }
+    :root{--uh-orange:#fb7b14;--uh-light:#f5f676;--uh-pink:#780e38;--uh-purple:#1c0b3a;--uh-green:#30ad3e}
+    .uh-bg{background:var(--uh-purple);color:#fff}
+    .uh-hero{background:var(--uh-orange);color:#1c0b3a}
+    .uh-nav{background:#000;color:#fff}
+    .uh-link:hover{color:var(--uh-light)}
   </style>
 </head>
-<body class="uh-bg text-white min-h-screen">
-  <nav class="bg-black/60 backdrop-blur p-4">
-    <div class="max-w-6xl mx-auto flex items-center justify-between gap-4">
-      <a href="{{ url_for('home') }}" class="flex items-center gap-3 font-extrabold tracking-wide">
-        <img src="/logo.png" alt="Underground Heat" class="h-8 w-auto" />
+<body class="bg-gray-100 text-gray-900">
+  <!-- Header -->
+  <nav class="uh-nav p-4">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <a href="{{ url_for('home') }}" class="flex items-center gap-3 font-bold text-lg">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Underground Heat" class="h-8 w-auto">
         <span>Underground Heat</span>
       </a>
-      <div class="flex items-center gap-5 text-sm">
+      <div class="space-x-4">
         <a href="{{ url_for('home') }}" class="uh-link">Home</a>
         <a href="{{ url_for('contact') }}" class="uh-link">Contact</a>
         <a href="{{ url_for('privacy') }}" class="uh-link">Privacy</a>
@@ -37,32 +31,37 @@
     </div>
   </nav>
 
-  <header class="py-16 text-center">
-    <h1 class="text-4xl md:text-5xl font-extrabold">About <span class="uh-accent">Underground Heat</span></h1>
-    <p class="mt-3 text-indigo-200">Spotlighting independent artists with raw talent and real stories.</p>
+  <!-- Hero -->
+  <header class="uh-hero py-16 text-center">
+    <h1 class="text-4xl font-extrabold">About Underground Heat</h1>
+    <p class="mt-2 text-lg">Spotlighting the next wave of artists.</p>
   </header>
 
-  <main class="max-w-4xl mx-auto px-4 pb-16 space-y-8">
-    <section class="uh-card rounded-2xl p-6">
-      <h2 class="text-2xl font-bold">Our Story</h2>
-      <p class="mt-2 text-indigo-200">
-        Underground Heat is a platform built to amplify rising voices in music.
-        We feature videos, performances, and artist journeys that deserve the spotlight.
+  <!-- Body -->
+  <main class="max-w-4xl mx-auto p-6 space-y-8">
+    <section>
+      <h2 class="text-2xl font-bold mb-3">Our Story</h2>
+      <p>
+        Underground Heat is a music platform and show that elevates undiscovered
+        talent. We celebrate creativity, give artists a stage, and connect fans
+        with the culture—raw, unfiltered, and loud.
       </p>
     </section>
 
-    <section class="uh-card rounded-2xl p-6">
-      <h2 class="text-2xl font-bold">What We Believe</h2>
-      <ul class="mt-2 list-disc list-inside text-indigo-200 space-y-1">
-        <li>Authenticity over algorithms</li>
-        <li>Consistency over clout</li>
-        <li>Community over ego</li>
+    <section>
+      <h2 class="text-2xl font-bold mb-3">What We Stand For</h2>
+      <ul class="list-disc list-inside space-y-1">
+        <li>Artists first</li>
+        <li>Real community over clout</li>
+        <li>Consistency beats hype</li>
+        <li>Culture, not algorithms</li>
       </ul>
     </section>
   </main>
 
-  <footer class="bg-black/70 py-6 mt-8 text-center text-sm text-indigo-200">
-    © {{ current_year }} Underground Heat
+  <!-- Footer -->
+  <footer class="bg-black text-white py-6 mt-12 text-center">
+    <p>&copy; {{ current_year }} Underground Heat</p>
   </footer>
 </body>
 </html>
