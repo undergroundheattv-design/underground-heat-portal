@@ -2,59 +2,105 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Privacy Policy • Go Get It The Movement</title>
+  <title>Privacy • Underground Heat</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{
+      --uh-orange:#fb7b14;
+      --uh-lightgray:#f5f676;
+      --uh-pink:#780e38;
+      --uh-purple:#1c0b3a;
+      --uh-green:#30ad3e;
+    }
+    .uh-bg { background: var(--uh-purple); }
+    .uh-card { background:#15153a; }
+    .uh-accent { color: var(--uh-orange); }
+    .uh-link { color: var(--uh-lightgray); }
+    .uh-link:hover { color:#fff; text-decoration: underline; }
+  </style>
 </head>
-<body class="bg-gray-100 text-gray-900">
-  <nav class="bg-black text-white p-4 flex justify-between">
-    <a href="{{ url_for('home') }}" class="font-bold">Go Get It The Movement</a>
-    <div class="space-x-4">
-      <a href="{{ url_for('home') }}" class="hover:text-yellow-400">Home</a>
-      <a href="{{ url_for('about') }}" class="hover:text-yellow-400">About</a>
-      <a href="{{ url_for('contact') }}" class="hover:text-yellow-400">Contact</a>
-      <a href="{{ url_for('terms') }}" class="hover:text-yellow-400">Terms</a>
-      <a href="{{ url_for('admin') }}" class="hover:text-yellow-400">Admin</a>
+<body class="uh-bg text-white min-h-screen">
+  <!-- Nav -->
+  <nav class="bg-black/60 backdrop-blur p-4">
+    <div class="max-w-6xl mx-auto flex items-center justify-between gap-4">
+      <a href="{{ url_for('home') }}" class="flex items-center gap-3 font-extrabold tracking-wide">
+        <img src="/logo.png" alt="Underground Heat" class="h-8 w-auto" />
+        <span>Underground Heat</span>
+      </a>
+      <div class="flex items-center gap-5 text-sm">
+        <a href="{{ url_for('home') }}" class="uh-link">Home</a>
+        <a href="{{ url_for('about') }}" class="uh-link">About</a>
+        <a href="{{ url_for('contact') }}" class="uh-link">Contact</a>
+        <a href="{{ url_for('terms') }}" class="uh-link">Terms</a>
+        <a href="{{ url_for('admin') }}" class="uh-link">Admin</a>
+      </div>
     </div>
   </nav>
 
-  <header class="bg-yellow-400 py-16 text-center">
-    <h1 class="text-4xl font-extrabold">Privacy Policy</h1>
-    <p class="mt-2 text-lg">Effective: {{ effective_date or "August 2025" }}</p>
+  <!-- Header -->
+  <header class="py-16 text-center">
+    <h1 class="text-4xl md:text-5xl font-extrabold">Privacy Policy</h1>
+    <p class="mt-2 text-indigo-200">
+      Effective {{ effective_date or "August 2025" }}
+    </p>
   </header>
 
-  <main class="max-w-4xl mx-auto p-6 space-y-6 bg-white rounded shadow">
-    <p>
-      We respect your privacy. This policy explains what data we collect, how we use it,
-      and the choices you have.
-    </p>
+  <!-- Content -->
+  <main class="max-w-4xl mx-auto px-4 pb-16 space-y-6">
+    <section class="uh-card rounded-2xl p-6">
+      <h2 class="text-2xl font-bold">Overview</h2>
+      <p class="mt-2 text-indigo-200">
+        Underground Heat (“we”, “our”, “us”) respects your privacy. This policy explains
+        what we collect, how we use it, and the choices you have.
+      </p>
+    </section>
 
-    <h2 class="text-xl font-bold">Information We Collect</h2>
-    <ul class="list-disc list-inside space-y-1">
-      <li>Contact details you provide (e.g., name, email)</li>
-      <li>Form submissions and messages</li>
-      <li>Basic analytics (aggregated)</li>
-    </ul>
+    <section class="uh-card rounded-2xl p-6">
+      <h3 class="text-xl font-bold">Information We Collect</h3>
+      <ul class="mt-2 list-disc list-inside text-indigo-200 space-y-1">
+        <li><span class="font-semibold">Contact details</span> (e.g., name, email) when you message us.</li>
+        <li><span class="font-semibold">Submission links</span> you provide for videos/performances.</li>
+        <li><span class="font-semibold">Usage data</span> such as basic analytics to improve the site.</li>
+      </ul>
+    </section>
 
-    <h2 class="text-xl font-bold">How We Use Information</h2>
-    <ul class="list-disc list-inside space-y-1">
-      <li>Respond to inquiries and provide services</li>
-      <li>Improve site performance and content</li>
-      <li>Security and abuse prevention</li>
-    </ul>
+    <section class="uh-card rounded-2xl p-6">
+      <h3 class="text-xl font-bold">How We Use Information</h3>
+      <ul class="mt-2 list-disc list-inside text-indigo-200 space-y-1">
+        <li>Respond to questions and manage artist submissions.</li>
+        <li>Feature content on Underground Heat (with your permission where required).</li>
+        <li>Maintain security and improve the experience.</li>
+      </ul>
+    </section>
 
-    <h2 class="text-xl font-bold">Your Choices</h2>
-    <p>
-      You can request access, correction, or deletion of your personal data by contacting us.
-    </p>
+    <section class="uh-card rounded-2xl p-6">
+      <h3 class="text-xl font-bold">Sharing</h3>
+      <p class="mt-2 text-indigo-200">
+        We don’t sell your personal information. We may share with service providers
+        (e.g., email or hosting) as needed to operate the site, bound by confidentiality.
+      </p>
+    </section>
 
-    <p class="text-sm text-gray-500">If you have questions, contact: 
-      <a class="text-blue-600 underline" href="mailto:info@gogetitmovement.com">info@gogetitmovement.com</a>.
-    </p>
+    <section class="uh-card rounded-2xl p-6">
+      <h3 class="text-xl font-bold">Your Choices</h3>
+      <ul class="mt-2 list-disc list-inside text-indigo-200 space-y-1">
+        <li>You can request access, update, or deletion of your info.</li>
+        <li>You can opt out of marketing communications at any time.</li>
+      </ul>
+    </section>
+
+    <section class="uh-card rounded-2xl p-6">
+      <h3 class="text-xl font-bold">Contact</h3>
+      <p class="mt-2 text-indigo-200">
+        Questions about this policy? Reach us via the <a class="uh-link" href="{{ url_for('contact') }}">contact page</a>.
+      </p>
+    </section>
   </main>
 
-  <footer class="bg-black text-white py-6 mt-12 text-center">
-    <p>&copy; {{ current_year }} Go Get It The Movement</p>
+  <!-- Footer -->
+  <footer class="bg-black/70 py-6 mt-8 text-center text-sm text-indigo-200">
+    © {{ current_year }} Underground Heat
   </footer>
 </body>
 </html>
