@@ -1,7 +1,29 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="about">
-  <h2>Privacy Policy</h2>
-  <p>Your privacy is important to us. Underground Heat does not sell or share your data. Information submitted through forms is used only to contact you or process your submission.</p>
-</div>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Privacy • {{ brand.name }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{ --c-purple: {{ brand.dark_purple }}; --c-light: {{ brand.light_gray }}; }
+  </style>
+</head>
+<body class="bg-[var(--c-purple)] text-white">
+  <nav class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+    <a href="{{ url_for('home') }}" class="font-extrabold text-xl">{{ brand.name }}</a>
+    <a href="{{ url_for('home') }}" class="hover:text-[var(--c-light)]">Home</a>
+  </nav>
+
+  <main class="max-w-4xl mx-auto p-6 space-y-6">
+    <h1 class="text-3xl font-extrabold mb-2">Privacy Policy</h1>
+    <p class="text-white/80">Effective {{ effective_date }}</p>
+    <p class="text-white/90">
+      We respect your privacy. We collect only the information needed to operate
+      {{ brand.name }} (e.g., contact form submissions) and we don’t sell your data.
+    </p>
+  </main>
+
+  <footer class="text-center text-white/80 py-8">&copy; {{ current_year }} {{ brand.name }}</footer>
+</body>
+</html>
