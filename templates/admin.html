@@ -1,7 +1,50 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="about">
-  <h2>Admin Dashboard</h2>
-  <p>This section is for internal use only. Please log in to view submissions and manage content.</p>
-</div>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin • {{ brand.name }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>:root{ --c-purple: {{ brand.dark_purple }}; --c-light: {{ brand.light_gray }}; }</style>
+</head>
+<body class="bg-[var(--c-purple)] text-white">
+  <nav class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+    <a href="{{ url_for('home') }}" class="font-extrabold text-xl">{{ brand.name }}</a>
+    <a href="{{ url_for('home') }}" class="hover:text-[var(--c-light)]">Home</a>
+  </nav>
+
+  <main class="max-w-5xl mx-auto p-6">
+    <h1 class="text-3xl font-extrabold mb-6">Admin</h1>
+    {% if rows and rows|length > 0 %}
+      <div class="overflow-x-auto bg-white text-gray-900 rounded-xl">
+        <table class="min-w-full">
+          <thead>
+            <tr class="bg-gray-100">
+              <th class="text-left px-4 py-3">#</th>
+              <th class="text-left px-4 py-3">Name</th>
+              <th class="text-left px-4 py-3">Email</th>
+              <th class="text-left px-4 py-3">Message</th>
+              <th class="text-left px-4 py-3">Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in rows %}
+            <tr class="border-t">
+              <td class="px-4 py-3">{{ loop.index }}</td>
+              <td class="px-4 py-3">{{ row.name }}</td>
+              <td class="px-4 py-3">{{ row.email }}</td>
+              <td class="px-4 py-3">{{ row.message }}</td>
+              <td class="px-4 py-3">{{ row.created_at }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="text-white/80">No data yet. Add a database later to populate this table.</p>
+    {% endif %}
+  </main>
+
+  <footer class="text-center text-white/80 py-8">&copy; {{ current_year }} {{ brand.name }}</footer>
+</body>
+</html>
