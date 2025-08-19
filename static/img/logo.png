@@ -1,1 +1,1 @@
-<img src="{{ url_for('static', filename='img/logo.png') }}" alt="Underground Heat" width="140" height="140">
+<img src="{{ url_for('static', filename='logo.png') }}" alt="Underground Heat" width="140" height="140">
