@@ -1,50 +1,59 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Admin | Underground Heat</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <style>
-    body{font-family:system-ui,Segoe UI,Arial,sans-serif;margin:0;background:#0b0b2a;color:#fff}
-    .wrap{max-width:1000px;margin:40px auto;padding:24px}
-    .card{background:#15153a;border-radius:16px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
-    h1{margin:0 0 16px}
-    table{width:100%;border-collapse:collapse;margin-top:10px}
-    th,td{border-bottom:1px solid #2b2b5e;padding:10px;text-align:left;color:#cfd3ff}
-    th{color:#fff}
-    .muted{color:#9aa0ff}
-    a{color:#ffb84d;text-decoration:none}
-    a:hover{text-decoration:underline}
-  </style>
+  <meta charset="UTF-8" />
+  <title>Admin • Go Get It The Movement</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <div class="wrap">
-    <div class="card">
-      <h1>Admin — Submissions</h1>
-      {% if rows and rows|length %}
-        <table>
-          <thead>
+<body class="bg-gray-100 text-gray-900">
+  <nav class="bg-black text-white p-4 flex justify-between">
+    <a href="{{ url_for('home') }}" class="font-bold">Go Get It The Movement</a>
+    <div class="space-x-4">
+      <a href="{{ url_for('home') }}" class="hover:text-yellow-400">Home</a>
+      <a href="{{ url_for('about') }}" class="hover:text-yellow-400">About</a>
+      <a href="{{ url_for('contact') }}" class="hover:text-yellow-400">Contact</a>
+      <a href="{{ url_for('privacy') }}" class="hover:text-yellow-400">Privacy</a>
+      <a href="{{ url_for('terms') }}" class="hover:text-yellow-400">Terms</a>
+    </div>
+  </nav>
+
+  <header class="bg-yellow-400 py-16 text-center">
+    <h1 class="text-3xl font-extrabold">Admin Dashboard</h1>
+    <p class="mt-2">Private area — authorized users only.</p>
+  </header>
+
+  <main class="max-w-5xl mx-auto p-6 space-y-6">
+    {% if rows %}
+      <div class="bg-white rounded shadow overflow-x-auto">
+        <table class="min-w-full text-left">
+          <thead class="bg-gray-50">
             <tr>
-              <th>ID</th><th>Artist</th><th>Email</th><th>Video</th><th>Created</th>
+              {% for h in rows[0].keys() %}
+                <th class="px-4 py-2 text-sm font-semibold text-gray-600 uppercase">{{ h }}</th>
+              {% endfor %}
             </tr>
           </thead>
           <tbody>
             {% for r in rows %}
-              <tr>
-                <td>{{ r.id }}</td>
-                <td>{{ r.artist_name }}</td>
-                <td>{{ r.email }}</td>
-                <td><a href="{{ r.video_link }}" target="_blank">link</a></td>
-                <td class="muted">{{ r.created_at }}</td>
+              <tr class="border-t">
+                {% for v in r.values() %}
+                  <td class="px-4 py-2 text-sm">{{ v if v is not none else "-" }}</td>
+                {% endfor %}
               </tr>
             {% endfor %}
           </tbody>
         </table>
-      {% else %}
-        <p class="muted">No submissions yet.</p>
-      {% endif %}
-      <p style="margin-top:12px"><a href="/">← Back home</a></p>
-    </div>
-  </div>
+      </div>
+    {% else %}
+      <div class="bg-white rounded shadow p-6">
+        <p>No records to display yet.</p>
+      </div>
+    {% endif %}
+  </main>
+
+  <footer class="bg-black text-white py-6 mt-12 text-center">
+    <p>&copy; {{ current_year }} Go Get It The Movement</p>
+  </footer>
 </body>
 </html>
