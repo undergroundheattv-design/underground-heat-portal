@@ -1,72 +1,83 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <title>Underground Heat</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
     :root{
-      --c-orange: {{ brand.orange }};
-      --c-light:  {{ brand.light_gray }};
-      --c-pink:   {{ brand.dark_pink }};
-      --c-purple: {{ brand.dark_purple }};
-      --c-green:  {{ brand.green }};
+      --uh-orange:#fb7b14;
+      --uh-light:#f5f676;
+      --uh-pink:#780e38;
+      --uh-purple:#1c0b3a;
+      --uh-green:#30ad3e;
     }
+    *{box-sizing:border-box}
+    body{margin:0;background: radial-gradient(1200px 600px at 10% 0%, #2a0f56 0%, var(--uh-purple) 60%); color:#fff; font-family:system-ui, Segoe UI, Arial, sans-serif;}
+    .nav{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:18px 20px}
+    .nav a{color:#fff;text-decoration:none;opacity:.9}
+    .nav a:hover{opacity:1}
+    .menu{display:flex;gap:18px;align-items:center}
+    .cta{background:var(--uh-orange);color:#fff;font-weight:800;padding:10px 14px;border-radius:12px}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px 20px 60px}
+    .hero{display:grid;grid-template-columns:1.2fr 1fr;gap:28px;align-items:center;margin-top:16px}
+    .card{background:#15153a;border-radius:16px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    .tag{background:var(--uh-pink);display:inline-block;padding:4px 10px;border-radius:999px;font-weight:700;font-size:12px}
+    .btn{background:var(--uh-orange);color:#fff;font-weight:800;padding:14px 18px;border:none;border-radius:12px;cursor:pointer;text-decoration:none;display:inline-block}
+    .btn:hover{filter:brightness(1.05)}
+    .kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+    .kpi .card{background:#101133}
+    footer{border-top:1px solid rgba(255,255,255,.12); margin-top:40px; padding:18px 0; color:#cfd3ff; font-size:14px}
+    .links{display:flex;gap:14px;flex-wrap:wrap}
+    .links a{color:var(--uh-light)}
   </style>
 </head>
-<body class="min-h-screen text-white" style="background:radial-gradient(80% 120% at 0% 0%, var(--c-pink), transparent 50%) , var(--c-purple)">
-
-  <!-- NAV -->
-  <nav class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-    <a href="{{ url_for('home') }}" class="flex items-center gap-3 font-extrabold text-xl">
-      <img src="{{ brand.logo_url }}" alt="Underground Heat logo" class="w-10 h-10 rounded-md shadow" />
-      <span>{{ brand.name }}</span>
+<body>
+  <header class="nav">
+    <a href="{{ url_for('home') }}" style="display:flex;align-items:center;gap:12px;">
+      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Underground Heat" width="56" height="56">
+      <strong style="font-size:20px;letter-spacing:.5px;">Underground Heat</strong>
     </a>
-    <div class="flex items-center gap-6 text-sm">
-      <a href="{{ url_for('about') }}"   class="hover:text-[var(--c-light)]">About</a>
-      <a href="{{ url_for('contact') }}" class="hover:text-[var(--c-light)]">Contact</a>
-      <a href="{{ url_for('privacy') }}" class="hover:text-[var(--c-light)]">Privacy</a>
-      <a href="{{ url_for('terms') }}"   class="hover:text-[var(--c-light)]">Terms</a>
-      <a href="{{ url_for('admin') }}?key=changeme" class="hover:text-[var(--c-light)]">Admin</a>
-    </div>
-  </nav>
-
-  <!-- HERO -->
-  <header class="max-w-6xl mx-auto px-4 mt-6">
-    <div class="rounded-2xl p-8 md:p-12 shadow-xl"
-         style="background:linear-gradient(135deg,var(--c-orange),var(--c-pink));">
-      <h1 class="text-4xl md:text-5xl font-extrabold">Underground Heat</h1>
-      <p class="mt-3 text-lg opacity-95">The independent music show turning raw talent into a spotlight.</p>
-      <div class="mt-6 flex flex-wrap gap-3">
-        <a href="{{ url_for('contact') }}"
-           class="px-5 py-3 rounded-lg font-bold text-black"
-           style="background:var(--c-light);">Get in touch</a>
-        <a href="{{ url_for('about') }}"
-           class="px-5 py-3 rounded-lg font-bold border"
-           style="border-color:rgba(255,255,255,.25)">Learn more</a>
-      </div>
-    </div>
+    <nav class="menu">
+      <a href="{{ url_for('about') }}">About</a>
+      <a href="{{ url_for('contact') }}">Contact</a>
+      <a class="cta" href="{{ url_for('contact') }}">Submit Your Video</a>
+    </nav>
   </header>
 
-  <!-- FEATURES -->
-  <main class="max-w-6xl mx-auto px-4 py-12 grid md:grid-cols-3 gap-6">
-    <div class="rounded-xl p-6 bg-white/5 border border-white/10">
-      <h3 class="font-bold text-lg mb-1">Real Artists</h3>
-      <p class="text-white/80">We highlight independent artists with something to say and a show to prove.</p>
-    </div>
-    <div class="rounded-xl p-6 bg-white/5 border border-white/10">
-      <h3 class="font-bold text-lg mb-1">Real Reactions</h3>
-      <p class="text-white/80">Performances, premieres, and honest crowd energy—no fluff.</p>
-    </div>
-    <div class="rounded-xl p-6 bg-white/5 border border-white/10">
-      <h3 class="font-bold text-lg mb-1">Real Platform</h3>
-      <p class="text-white/80">Clips, socials, and distribution that push great moments further.</p>
-    </div>
-  </main>
+  <main class="wrap">
+    <section class="hero">
+      <div class="card">
+        <span class="tag">Music Show</span>
+        <h1 style="margin:10px 0 8px;font-size:36px;line-height:1.1">Where underground artists get 🔥 exposure</h1>
+        <p style="color:#cfd3ff;max-width:56ch">
+          Underground Heat showcases raw talent—music videos and performances from rising artists.
+          Submit your video and get in front of fans, tastemakers, and curators.
+        </p>
+        <div style="display:flex;gap:12px;margin-top:14px">
+          <a class="btn" href="{{ url_for('contact') }}">Submit Your Video</a>
+          <a class="btn" style="background:var(--uh-green)" href="{{ url_for('about') }}">Learn More</a>
+        </div>
+        <div class="kpi">
+          <div class="card"><strong style="font-size:22px">Weekly</strong><div style="color:#cfd3ff">New drops</div></div>
+          <div class="card"><strong style="font-size:22px">Curated</strong><div style="color:#cfd3ff">By real heads</div></div>
+          <div class="card"><strong style="font-size:22px">Global</strong><div style="color:#cfd3ff">Underground scene</div></div>
+        </div>
+      </div>
+      <div class="card" style="text-align:center">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Underground Heat" width="280" height="280" style="max-width:100%;height:auto">
+        <p style="color:#cfd3ff;margin-top:10px">Orange <code>#fb7b14</code> • Pink <code>#780e38</code> • Purple <code>#1c0b3a</code> • Green <code>#30ad3e</code></p>
+      </div>
+    </section>
 
-  <footer class="mt-10 py-8 text-center text-white/80 border-t border-white/10">
-    <p>&copy; {{ current_year }} {{ brand.name }}</p>
-  </footer>
+    <footer>
+      <div class="links">
+        <a href="{{ url_for('privacy') }}">Privacy</a>
+        <a href="{{ url_for('terms') }}">Terms</a>
+        <a href="{{ url_for('admin') }}">Admin</a>
+      </div>
+      <div style="margin-top:6px;">© {{ current_year }} Underground Heat</div>
+    </footer>
+  </main>
 </body>
 </html>
